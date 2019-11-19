@@ -1,0 +1,10 @@
+{
+    "name": "syncme/server",
+    "authors": [
+        {
+            "name": "byzz",
+            "email": "eyedroot@gmail.com"
+        }
+    ],
+    "require": {}
+}
