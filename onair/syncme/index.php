@@ -1,3 +1,5 @@
 <?php 
-	//phpinfo();
-	var_dump(new \MongoDB\Driver\Manager());
+	include_once 'helper.php';
+
+	$mongo = getDBInstance('mongo');
+	print_r($mongo);
