@@ -9,6 +9,11 @@ namespace onair\lib;
 class InjectionSecurity
 {
     /**
+     * 내부에서 사용되는 메서드에 대한 Prefix
+     */
+    private const __INNERFIX_PREFIX__ = '__disposal';
+
+    /**
      * $_GET 또는 $_POST의 주소값이 담긴다
      */
     protected $request;
@@ -19,6 +24,13 @@ class InjectionSecurity
      * @var string
      */
     protected $key;
+
+    /**
+     * 현재 키에 해당되는 값이 담긴다
+     *
+     * @var string
+     */
+    protected $value;
 
     /**
      * InjectionSecurity의 생성자
@@ -40,6 +52,7 @@ class InjectionSecurity
         }
 
         $this->key = $key;
+        $this->value = $this->request[ $key ];
 
         return $this;
     }
@@ -51,21 +64,68 @@ class InjectionSecurity
      * @return string|integer|float|double
      */
     function disposal(string $type) {
-        $callableMethod = '__disposal' . ucfirst(trim(strtolower($type)));      
+        $callableMethod = ( __INNERFIX_PREFIX__ . ucfirst(trim(strtolower($type))) );      
 
         if (\method_exists($this, $callableMethod)) {
-            return $this->{$callableMethod}();
+            return $this->{ $callableMethod }();
         }
 
         throw new \ErrorException("Unknown type");
     }
 
     /**
-     * 현재 
+     * 문자열 값인지 확인함
      *
-     * @return void
+     * @return boolean
+     */
+    function isLetter(mixed $v) : bool {
+        return !! (
+            ! is_int($v) &&
+            ! is_null($v) &&
+            ! is_bool($v) &&
+            ! is_array($v) &&
+            ! is_object($v) &&
+            ! is_resource($v)
+        );
+    }
+
+    /**
+     * 이스케이프한 문자열을 돌려줌
+     *
+     * @return string
+     */
+    private function __disposalEscape() {
+        return str_replace(
+            ['\\', "\0", "\n", "\r", "'", '"', "\x1a"], 
+            ['\\\\', '\\0', '\\n', '\\r', "\\'", '\\"', '\\Z'], 
+            $this->value
+        );
+    } 
+
+    /**
+     * 이스케이프 하지 않는 문자열을 돌려줌
+     *
+     * @return string|false
      */
     private function __disposalString() {
-        return $this->request[$this->key];
-    } 
+        return $this->isLetter($this->value) ? strval($this->value) : false;
+    }
+
+    /**
+     * 정수형 타입을 리턴
+     *
+     * @return integer|false
+     */
+    private function __disposalInt() {
+        return is_numeric($this->value) && is_int($this->value + 0) ? intval($this->value) : false;
+    }
+
+    /**
+     * 실수형 타입을 리턴
+     *
+     * @return float|false
+     */
+    private function __disposalFloat() {
+        return is_numeric($this->value) && is_float($this->value) ? floatval($this->value) : false;
+    }
 }
