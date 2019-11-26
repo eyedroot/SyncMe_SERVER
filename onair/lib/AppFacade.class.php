@@ -9,7 +9,7 @@ namespace onair\lib;
  * 
  * TODO 다른 주소값을 가지는 인스턴트를 생성하는 것은 현재 고려 중이다
  */
-class AppFacade extends \onair\lib\abstract\AppFacadeAbstract
+class AppFacade extends \onair\lib\abstract\FacadeAbstract
 {
     /**
      * 인스턴트들을 공유하기 위한 static 변수
