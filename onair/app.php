@@ -16,7 +16,7 @@ include_once 'constant.php';
  */
 if (! function_exists('handleDB')) {
     function handleDB(string $dbType = 'mongo') {
-        return \onair\lib\InstanceFacade::getDBInstance($dbType);
+        return \onair\lib\AppFacade::getDBInstance($dbType);
     }
 }
 
@@ -27,7 +27,7 @@ if (! function_exists('handleDB')) {
  */
 if (! function_exists('handleRequest')) {
     function handleRequest(string $key) {
-        return \onair\lib\InstanceFacade::getSecurityRequest('POST', $key);
+        return \onair\lib\AppFacade::getSecurityRequest('POST', $key);
     }
 }
 
