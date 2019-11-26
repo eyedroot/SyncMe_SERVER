@@ -1,7 +1,7 @@
 <?php 
 	include_once 'app.php';
 
-	$mongo = handleDB('mongo');
+	$mongo = \handleDB('mongo');
 	$bulk = new MongoDB\Driver\BulkWrite();
 
 	$params = \toObject(

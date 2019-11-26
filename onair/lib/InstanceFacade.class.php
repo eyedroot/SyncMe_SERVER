@@ -27,18 +27,18 @@ namespace onair\lib;
         $identifier = __FUNCTION__ . ':' . $dbType;
 
         if (\array_key_exists($identifier, static::$facades)) {
-            return static::$facades[$identifier];
+            return static::$facades[ $identifier ];
         }
 
         switch ($dbType) {
             case 'mongo':
                 // @todo 라이브서버와 로컬 개발환경에 대한 구분 로직이 필요함
-                static::$facades[$identifier] = new \MongoDB\Driver\Manager("mongodb://mongo:27017/syncme");
+                static::$facades[ $identifier ] = new \MongoDB\Driver\Manager("mongodb://mongo:27017/syncme");
                 break;
             default:
         }
         
-        return static::$facades[$identifier];
+        return static::$facades[ $identifier ];
     }
 
     /**
@@ -52,15 +52,15 @@ namespace onair\lib;
         $identifier = __FUNCTION__ . ':' . $method;
 
         if (\array_key_exists($identifier, static::$facades)) {
-            return static::$facades[$identifier];
+            return static::$facades[ $identifier ];
         }
 
-        static::$facades[$identifier] = new \onair\lib\InjectionSecurity(
+        static::$facades[ $identifier ] = new \onair\lib\InjectionSecurity(
             \strtoupper($method),
             $key
         );
 
-        return static::$facades[$identifier];
+        return static::$facades[ $identifier ];
     }
 }
 
