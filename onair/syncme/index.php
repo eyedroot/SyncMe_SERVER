@@ -18,7 +18,7 @@
 	 * oauth_key
 	 */
 	$bulk->update(
-		['gcpid' => $_POST['gcpid']],
+		['gcpid' => $params->gcpid],
 		[
 			'$set' => [
 				'connection_date' => '',
