@@ -1,5 +1,5 @@
 <?php 
-	include_once 'helper.php';
+	include_once 'app.php';
 
 	$mongo = getDBInstance('mongo');
 	$bulk = new MongoDB\Driver\BulkWrite();
