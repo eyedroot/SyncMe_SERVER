@@ -98,6 +98,21 @@ if (! function_exists('toObject')) {
  */
 if (! function_exists('dd')) {
     function dd($data) {
-        highlight_string("<?php\n\$data =\n" . var_export($data, true) . ";\n?>");
+        highlight_string("\n<?php\n\$data =\n" . var_export($data, true) . ";\n?>\n\n");
+    }
+}
+
+/**
+ * 컨트롤러 
+ */
+if (! function_exists('controller')) {
+    function controller(string $ctrl) : \Closure {
+        $file = CONTROLLER_PATH . $ctrl . '.php';
+
+        if ( \file_exists($file) ) {
+            return include $file;
+        }
+
+        throw new \ErrorException("컨트롤러를 찾을 수 없습니다");
     }
 }

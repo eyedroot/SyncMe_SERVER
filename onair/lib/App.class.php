@@ -41,11 +41,12 @@ class App {
      * Method POST
      *
      * @param string $path
-     * @param |\Closure $router
+     * @param \Closure $router
      * @return void
      */
-    static function POST(string $path = '/', \Closure $router) {
-        if ($_SERVER['HTTP_METHOD'] === 'POST' && static::__capture($path) && is_callable($router)) {
+    static function POST(string $path = '/', \Closure $router) : void {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST' && 
+            static::__capturePath($path) && is_callable($router)) {
             $router();
         }
     }
@@ -55,7 +56,14 @@ class App {
      *
      * @return bool
      */
-    static function __capture(string $path) : bool {
-        return true;
+    static function __capturePath(string $path) : bool {
+        $requestUri = rtrim($_SERVER['REQUEST_URI'], '\/') . '/';
+        $path = rtrim($path, '\/') . '/';
+
+        if ($requestUri == $path) {
+            return true;
+        }
+
+        return false;
     }
 }

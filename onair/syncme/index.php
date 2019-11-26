@@ -19,7 +19,7 @@
 	// route
 	// POST /onair/syncme/test
 	app()::POST('/onair/syncme/test', controller('test'));
-	app()::POST('/onair/syncme/test2', controller('test2'));
+	// app()::POST('/onair/syncme/test2', controller('test2'));
 
 	exit;
 
