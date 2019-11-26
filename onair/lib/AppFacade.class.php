@@ -42,6 +42,24 @@ class AppFacade extends \onair\lib\abstract\FacadeAbstract
     }
 
     /**
+     * App 인스턴트 리턴
+     *
+     * @param string $key
+     * @return \onair\lib\App
+     */
+    static function getApp(string $key) : \onair\lib\App {
+        $identifier = 'app';
+
+        if (\array_key_exists($identifier, static::$facades)) {
+            return static::$facades[ $identifier ];
+        }
+
+        static::$facades[ $identifier ] = new \onair\lib\App($key);
+
+        return static::$facades[ $identifier ];
+    }
+
+    /**
      * Request 변수들을 컨트롤 하기 위한 메서드
      *
      * @param string $method [GET|POST]

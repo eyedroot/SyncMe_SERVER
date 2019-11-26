@@ -10,6 +10,15 @@ include_once 'autoload.php';
 include_once 'constant.php';
 
 /**
+ * 앱의 설정 파일 로드
+ */
+if (! function_exists('app')) {
+    function app(string $key) {
+        return \onair\lib\AppFacade::App($key);
+    }
+}
+
+/**
  * handleDB
  * 
  * 모든 DB 인스턴트는 해당 메서드를 통해 처리한다
@@ -28,6 +37,23 @@ if (! function_exists('handleDB')) {
 if (! function_exists('handleRequest')) {
     function handleRequest(string $key) {
         return \onair\lib\AppFacade::getSecurityRequest('POST', $key);
+    }
+}
+
+/**
+ * handleHeader
+ * 
+ * $_SERVER 헤더에 담긴 키를 찾아 리턴한다
+ */
+if (! function_exists('handleHeader')) {
+    function handleHeader(string $key) {
+        $key = strtoupper($key);
+
+        if (\array_key_exists($key, $_SERVER)) {
+            return $_SERVER[ $key ];
+        }
+
+        return null;
     }
 }
 
