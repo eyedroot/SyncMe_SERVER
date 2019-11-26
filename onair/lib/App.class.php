@@ -12,7 +12,7 @@ class App {
      *
      * @var array
      */
-    private $configuration;
+    private $configuration = [];
 
     /**
      * App 클래스의 생성자
@@ -23,7 +23,7 @@ class App {
         $fileConfiguration = ROOT_PATH . '../app.cfg.php';
 
         if ( \file_exists($fileConfiguration) ) {
-            $this->$configuration = require $fileConfiguration;
+            $this->configuration = require $fileConfiguration;
         }
 
         $key = trim($key);

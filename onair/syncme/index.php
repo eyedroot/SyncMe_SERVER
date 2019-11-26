@@ -3,22 +3,22 @@
 
 	const X_DEFAULT_ROUTER_HEADER = '';
 
-	$mongo = \handleDB('mongo');
+	$mongo = handleDB('mongo');
 	$bulk = new MongoDB\Driver\BulkWrite();
 
-	$params = \toObject(
+	$params = toObject(
 		handleRequest('gcpid')->disposal('string'),
 		handleRequest('os')->disposal('string')
 	);
 
 	dd($params);
 
-	if (\handlerHeader('HTTP_X_ROUTER_CALLED') === \app('default_router')) {
+	if (handleHeader('HTTP_X_ROUTER_CALLED') === app('default_router')) {
 
 		// route
 		// POST /onair/syncme/test
-		app()::POST('/onair/syncme/test', \controller('test'));
-		app()::POST('/onair/syncme/test2', \controller('test2'));
+		app()::POST('/onair/syncme/test', controller('test'));
+		app()::POST('/onair/syncme/test2', controller('test2'));
 
 	}
 	exit;

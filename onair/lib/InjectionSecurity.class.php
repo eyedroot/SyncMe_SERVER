@@ -71,10 +71,12 @@ class InjectionSecurity
      * @return void
      */
     function disposal(string $type) {
-        $callableMethod = ( __INNERFIX_PREFIX__ . ucfirst(trim(strtolower($type))) );      
+        $callableMethod = ( static::__INNERFIX_PREFIX__ . ucfirst(trim(strtolower($type))) ); 
 
         if (\method_exists($this, $callableMethod)) {
             $this->disposalMethod = $callableMethod;
+
+            return $this;
         }
 
         throw new \ErrorException("Unknown type");
@@ -107,7 +109,7 @@ class InjectionSecurity
      *
      * @return boolean
      */
-    function isLetter(mixed $v) : bool {
+    function isLetter(\mixed $v) : bool {
         return !! (
             ! is_int($v) &&
             ! is_null($v) &&

@@ -13,8 +13,8 @@ include_once 'constant.php';
  * 앱의 설정 파일 로드
  */
 if (! function_exists('app')) {
-    function app(string $key) {
-        return \onair\lib\AppFacade::App($key);
+    function app(string $key = null) {
+        return \onair\lib\AppFacade::getApp($key);
     }
 }
 
@@ -68,7 +68,7 @@ if (! function_exists('toObject')) {
             return new \stdClass;
         } 
         else if ($count === 1) {
-            if ($args[0] instanceof \Array) {
+            if ( is_array($args[0]) ) {
                 return (object) $args[0];
             } 
             else {
@@ -81,7 +81,7 @@ if (! function_exists('toObject')) {
 
             foreach ($args as $v) {
                 if ($v instanceof \onair\lib\InjectionSecurity) {
-                    $bulk[ $v->getKey() ] = $v->get()
+                    $bulk[ $v->getKey() ] = $v->get();
                 } 
                 else {
                     $bulk[ $i ] = $v;
