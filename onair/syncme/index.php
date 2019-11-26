@@ -1,11 +1,15 @@
 <?php 
 	include_once 'app.php';
 
-	$mongo = getDBInstance('mongo');
+	$mongo = handleDB('mongo');
 	$bulk = new MongoDB\Driver\BulkWrite();
 
-	$gcpid = handleRequest('gcpid')->disposal('string');
-	var_dump($gcpid);
+	$params = \toObject(
+		handleRequest('gcpid')->disposal('string'),
+		handleRequest('os')->disposal('string')
+	);
+
+	dd($params);
 	exit;
 
 	/**

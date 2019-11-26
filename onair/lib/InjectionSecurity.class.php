@@ -33,6 +33,13 @@ class InjectionSecurity
     protected $value;
 
     /**
+     * 실행될 메서드의 이름이 담긴다
+     *
+     * @var string
+     */
+    private $disposalMethod;
+
+    /**
      * InjectionSecurity의 생성자
      *
      * @param string $method HTTP REQUEST METHOD가 uppercase로 들어온다
@@ -61,16 +68,38 @@ class InjectionSecurity
      * 어떤 값으로 변수를 처리할 것인지 결정한다
      *
      * @param string $type [string|integer|float]
-     * @return string|integer|float|double
+     * @return void
      */
     function disposal(string $type) {
         $callableMethod = ( __INNERFIX_PREFIX__ . ucfirst(trim(strtolower($type))) );      
 
         if (\method_exists($this, $callableMethod)) {
-            return $this->{ $callableMethod }();
+            $this->disposalMethod = $callableMethod;
         }
 
         throw new \ErrorException("Unknown type");
+    }
+
+    /**
+     * 현재 설정된 값을 리턴함
+     *
+     * @return string|integer|float|double
+     */
+    function get() {
+        if (! $this->disposalMethod) {
+            return $this->{ $this->disposalMethod }();
+        }
+
+        return false;
+    }
+
+    /**
+     * 현재 지정한 키의 이름을 돌려줌
+     *
+     * @return string
+     */
+    function getKey() : string {
+        return $this->key;
     }
 
     /**
