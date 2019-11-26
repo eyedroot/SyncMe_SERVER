@@ -13,7 +13,7 @@ include_once 'constant.php';
  * 앱의 설정 파일 로드
  */
 if (! function_exists('app')) {
-    function app(string $key = null) {
+    function app(string $key = '') {
         return \onair\lib\AppFacade::getApp($key);
     }
 }
@@ -53,7 +53,7 @@ if (! function_exists('handleHeader')) {
             return $_SERVER[ $key ];
         }
 
-        return null;
+        return false;
     }
 }
 
