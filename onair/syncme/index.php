@@ -11,15 +11,10 @@
 		handleRequest('os')->disposal('string')
 	);
 
-	// dd($params);
-
-	// if (handleHeader('HTTP_X_ROUTER_CALLED') === app('default_router')) {
-	// }
-
-	// route
-	// POST /onair/syncme/test
-	app()::POST('/onair/syncme/test', controller('test'));
-	// app()::POST('/onair/syncme/test2', controller('test2'));
+	// setting Route
+	app()::POST('/onair/syncme/test', controller('app.test'));
+	app()::POST('/onair/syncme/join', controller('join'));
+	app()::POST('/onair/syncme/login', controller('login'));
 
 	exit;
 
