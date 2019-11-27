@@ -113,6 +113,25 @@ if (! function_exists('controller')) {
             return include $file;
         }
 
-        throw new \ErrorException("컨트롤러를 찾을 수 없습니다");
+        throw new \ErrorException("{$ctrl} :: 해당 컨트롤러를 찾을 수 없습니다");
+    }
+}
+
+/**
+ * 미들웨어
+ */
+if (! function_exists('middleware')) {
+    function middleware(string $middle) : bool {
+        $file = MIDDLEWARE_PATH . $middle . '.php';
+
+        if ( \file_exists($file) ) {
+            $middlewareClosure = include $file;
+
+            if (\is_callable($middlewareClosure)) {
+                return $middlewareClosure;
+            }
+        }
+
+        throw new \ErrorException("{$middle} :: 해당 미들웨어를 찾을 수 없습니다");
     }
 }
