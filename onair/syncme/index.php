@@ -15,6 +15,8 @@
 		app()::POST('/onair/syncme/join', controller('join'));
 
 		if (middleware('app_oauth')) {
+			// issue#1
+			//
 			// 해당 로직으로는 첫 번째 URI가 매칭된 후에도 다음
 			// 컨트롤러로 넘어가 URI를 비교하는 불필요한 로직이 있음
 			// 추후 해당 문제를 수정하면 성능에 좋은 영향을 끼칠 것 같다

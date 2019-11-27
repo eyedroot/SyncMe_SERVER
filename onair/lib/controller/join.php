@@ -2,6 +2,7 @@
 
 include_once 'app.php';
 
-return function () {
-  echo 2222; 
+return function ($entityBody) {
+  print_r($_SERVER);
+  print_r($entityBody);
 };

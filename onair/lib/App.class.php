@@ -82,7 +82,9 @@ class App
     private static function __http(string $method, string $path, \Closure $router) : void {
         if ($_SERVER['REQUEST_METHOD'] === $method && static::__capturePath($path)) {
             if (is_callable($router)) {
-                $router();
+                $entityBody = file_get_contents('php://input');
+
+                $router( $entityBody );
             }
         }
     }
