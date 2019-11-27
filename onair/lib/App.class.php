@@ -120,5 +120,58 @@ class App
         static::__http('PUT', $path, $router);
     }
 
+    /**
+     * Method DELETE
+     *
+     * @param string $path
+     * @param \Closure $router
+     * @return void
+     */
+    static function DELETE(string $path = '/', \Closure $router) : void {
+        static::__http('DELETE', $path, $router);
+    }
 
+    /**
+     * Method HEAD
+     *
+     * @param string $path
+     * @param \Closure $router
+     * @return void
+     */
+    static function HEAD(string $path = '/', \Closure $router) : void {
+        static::__http('HEAD', $path, $router);
+    }
+
+    /**
+     * Method OPTIONS
+     *
+     * @param string $path
+     * @param \Closure $router
+     * @return void
+     */
+    static function OPTIONS(string $path = '/', \Closure $router) : void {
+        static::__http('OPTIONS', $path, $router);
+    }
+
+    /**
+     * TRACE
+     *
+     * @param string $path
+     * @param \Closure $router
+     * @return void
+     */
+    static function TRACE(string $path = '/', \Closure $router) : void {
+        static::__http('TRACE', $path, $router);
+    }
+
+    /**
+     * Method CONNECT
+     *
+     * @param string $path
+     * @param \Closure $router
+     * @return void
+     */
+    static function CONNECT(string $path = '/', \Closure $router) : void {
+        static::__http('CONNECT', $path, $router);
+    }
 }
