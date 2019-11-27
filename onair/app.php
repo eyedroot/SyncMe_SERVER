@@ -128,7 +128,7 @@ if (! function_exists('middleware')) {
             $middlewareClosure = include $file;
 
             if (\is_callable($middlewareClosure)) {
-                return $middlewareClosure;
+                return ($middlewareClosure)();
             }
         }
 

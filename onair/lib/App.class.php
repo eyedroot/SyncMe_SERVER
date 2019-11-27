@@ -19,7 +19,7 @@ class App
      *
      * @var string
      */
-    protected $requestUri;
+    static $requestUri;
 
     /**
      * Http 리스트 목록
@@ -54,7 +54,7 @@ class App
 
         // 모든 URL의 끝은 '/'로 끝나야 한다
         // 예를 들어 `localhost/a`의 주소는 `localhost/a/`로 이동되어야 한다
-        $this->requestUri = rtrim($_SERVER['REQUEST_URI'], '\/') . '/';
+        static::$requestUri = rtrim($_SERVER['REQUEST_URI'], '\/') . '/';
     }
 
     /**
@@ -65,7 +65,7 @@ class App
     private static function __capturePath(string $path) : bool {
         $path = rtrim($path, '\/') . '/';
 
-        if ($this->requestUri == $path) {
+        if (static::$requestUri == $path) {
             return true;
         }
 
