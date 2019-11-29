@@ -65,21 +65,23 @@ class App
      * @return boolean
      */
     static function HTTP(array $middlewares = [], array $controllers = []) : bool {
-        $middlewareContinue = false;
+        // 다음 미들웨어 \Closure에 대한 파라메터
+        // 미들웨어에서는 특정 조건을 만족시키지 못 하면 `return false;`로 로직을 중단해버린다
+        $deliver = null;
 
         foreach ($middlewares as $mw) {
-            if (\is_callable($mw)) {
-                $middlewareContinue = ( $middlewareContinue && $mw() );
-            }
-
-            $middlewareContinue = false;
-        }
-
-        if ($middlewareContinue) {
-            foreach ($controllers as $ctrl) {
-                if (\is_callable($ctrl) && true === $ctrl()) {
-                    return true;
+            if ( \is_callable($mw) ) {
+                if (! $deliver = $mw( $deliver )) {
+                    // 중간 미들웨어에서 유효하지 않으면
+                    // 403 헤더 종료
+                    http_response_code(403);
                 }
+            }
+        }
+        
+        foreach ($controllers as $ctrl) {
+            if ( \is_callable($ctrl) && $ctrl() ) {
+                return true;
             }
         }
 
