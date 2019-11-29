@@ -1,8 +1,6 @@
 <?php 
 	include_once 'app.php';
 
-	const X_DEFAULT_ROUTER_HEADER = '';
-
 	$mongo = handleDB('mongo');
 	$bulk = new MongoDB\Driver\BulkWrite();
 
