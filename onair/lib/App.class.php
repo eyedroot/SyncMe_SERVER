@@ -58,6 +58,35 @@ class App
     }
 
     /**
+     * Controller를 실행시키기 위한 Wrapper
+     *
+     * @param array $middlewares
+     * @param array $controllers
+     * @return boolean
+     */
+    static function HTTP(array $middlewares = [], array $controllers = []) : bool {
+        $middlewareContinue = false;
+
+        foreach ($middlewares as $mw) {
+            if (\is_callable($mw)) {
+                $middlewareContinue = ( $middlewareContinue && $mw() );
+            }
+
+            $middlewareContinue = false;
+        }
+
+        if ($middlewareContinue) {
+            foreach ($controllers as $ctrl) {
+                if (\is_callable($ctrl) && true === $ctrl()) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * __capturePath
      *
      * @return bool
@@ -77,16 +106,22 @@ class App
      *
      * @param string GET|POST|HEAD|OPTIONS|PUT|DELETE|TRACE|CONNECT
      * @param \Closure $router
-     * @return void
+     * @return bool
      */
-    private static function __http(string $method, string $path, \Closure $router) : void {
+    private static function __http(string $method, string $path, \Closure $router) : bool {
         if ($_SERVER['REQUEST_METHOD'] === $method && static::__capturePath($path)) {
             if (is_callable($router)) {
                 $entityBody = file_get_contents('php://input');
 
                 $router( $entityBody );
+
+                return true;
             }
+
+            return false;
         }
+
+        return false;
     }
 
     /**
@@ -94,10 +129,12 @@ class App
      *
      * @param string $path
      * @param \Closure $router
-     * @return void
+     * @return \Closure
      */
-    static function POST(string $path = '/', \Closure $router) : void {
-        static::__http('POST', $path, $router);
+    static function POST(string $path = '/', \Closure $router) : \Closure {
+        return function () {
+            return static::__http('POST', $path, $router);
+        }
     }
 
     /**
@@ -105,10 +142,12 @@ class App
      *
      * @param string $path
      * @param \Closure $router
-     * @return void
+     * @return bool
      */
-    static function GET(string $path = '/', \Closure $router) : void {
-        static::__http('GET', $path, $router);
+    static function GET(string $path = '/', \Closure $router) : bool {
+        return function () {
+            return static::__http('GET', $path, $router);
+        }
     }
 
     /**
@@ -116,10 +155,12 @@ class App
      *
      * @param string $path
      * @param \Closure $router
-     * @return void
+     * @return bool
      */
-    static function PUT(string $path = '/', \Closure $router) : void {
-        static::__http('PUT', $path, $router);
+    static function PUT(string $path = '/', \Closure $router) : bool {
+        return function () {
+            return static::__http('PUT', $path, $router);
+        }
     }
 
     /**
@@ -127,10 +168,12 @@ class App
      *
      * @param string $path
      * @param \Closure $router
-     * @return void
+     * @return bool
      */
-    static function DELETE(string $path = '/', \Closure $router) : void {
-        static::__http('DELETE', $path, $router);
+    static function DELETE(string $path = '/', \Closure $router) : bool {
+        return function () {
+            return static::__http('DELETE', $path, $router);
+        }
     }
 
     /**
@@ -138,10 +181,12 @@ class App
      *
      * @param string $path
      * @param \Closure $router
-     * @return void
+     * @return bool
      */
-    static function HEAD(string $path = '/', \Closure $router) : void {
-        static::__http('HEAD', $path, $router);
+    static function HEAD(string $path = '/', \Closure $router) : bool {
+        return function () {
+            return static::__http('HEAD', $path, $router);
+        }
     }
 
     /**
@@ -149,10 +194,12 @@ class App
      *
      * @param string $path
      * @param \Closure $router
-     * @return void
+     * @return bool
      */
-    static function OPTIONS(string $path = '/', \Closure $router) : void {
-        static::__http('OPTIONS', $path, $router);
+    static function OPTIONS(string $path = '/', \Closure $router) : bool {
+        return function () {
+            return static::__http('OPTIONS', $path, $router);
+        }
     }
 
     /**
@@ -160,10 +207,12 @@ class App
      *
      * @param string $path
      * @param \Closure $router
-     * @return void
+     * @return bool
      */
-    static function TRACE(string $path = '/', \Closure $router) : void {
-        static::__http('TRACE', $path, $router);
+    static function TRACE(string $path = '/', \Closure $router) : bool {
+        return function () {
+            return static::__http('TRACE', $path, $router);
+        }
     }
 
     /**
@@ -171,9 +220,11 @@ class App
      *
      * @param string $path
      * @param \Closure $router
-     * @return void
+     * @return bool
      */
-    static function CONNECT(string $path = '/', \Closure $router) : void {
-        static::__http('CONNECT', $path, $router);
+    static function CONNECT(string $path = '/', \Closure $router) : bool {
+        return function () {
+            return static::__http('CONNECT', $path, $router);
+        }
     }
 }
