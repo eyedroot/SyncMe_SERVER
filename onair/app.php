@@ -10,6 +10,15 @@ include_once 'autoload.php';
 include_once 'constant.php';
 
 /**
+ * Closure 체크 함수
+ */
+if (! function_exists('is_closure')) {
+    function is_closure($t) : bool {
+        return !! ($t instanceof \Closure);
+    }
+}
+
+/**
  * 앱의 설정 파일 로드
  */
 if (! function_exists('app')) {
@@ -17,6 +26,16 @@ if (! function_exists('app')) {
         return \onair\lib\AppFacade::getApp($key);
     }
 }
+
+/**
+ * 앱의 설정 파일 로드
+ */
+if (! function_exists('user')) {
+    function user() {
+        return \onair\lib\AppFacade::getUser();
+    }
+}
+
 
 /**
  * handleDB
@@ -79,16 +98,17 @@ if (! function_exists('toObject')) {
             $i = 0;
             $bulk = [];
 
-            foreach ($args as $v) {
+            foreach ($args as $key => $v) {
                 if ($v instanceof \onair\lib\InjectionSecurity) {
                     $bulk[ $v->getKey() ] = $v->get();
-                } 
-                else {
-                    $bulk[ $i ] = $v;
+                } else {
+                    $bulk[ $key ] = $v;
                 }
 
                 $i += 1;
             }
+
+            return (object) $bulk;
         }
     }
 }
@@ -99,6 +119,14 @@ if (! function_exists('toObject')) {
 if (! function_exists('dd')) {
     function dd($data) {
         highlight_string("\n<?php\n\$data =\n" . var_export($data, true) . ";\n?>\n\n");
+    }
+}
+
+if (! function_exists('jsonEnd')) {
+    function jsonEnd(string $message, int $code) : void {
+        header('Content-Type: application/json');
+        echo json_encode([ 'code' => $code, 'explain' => $message ]);
+        exit();
     }
 }
 
@@ -121,14 +149,14 @@ if (! function_exists('controller')) {
  * 미들웨어
  */
 if (! function_exists('middleware')) {
-    function middleware(string $middle) : bool {
+    function middleware(string $middle) : \Closure {
         $file = MIDDLEWARE_PATH . $middle . '.php';
 
         if ( \file_exists($file) ) {
             $middlewareClosure = include $file;
 
-            if (\is_callable($middlewareClosure)) {
-                return ($middlewareClosure);
+            if ( is_closure($middlewareClosure) ) {
+                return $middlewareClosure;
             }
         }
 

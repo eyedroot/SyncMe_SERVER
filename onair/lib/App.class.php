@@ -75,6 +75,7 @@ class App
                     // 중간 미들웨어에서 유효하지 않으면
                     // 403 헤더 종료
                     http_response_code(403);
+                    die('Forbidden');
                 }
             }
         }
@@ -134,9 +135,9 @@ class App
      * @return \Closure
      */
     static function POST(string $path = '/', \Closure $router) : \Closure {
-        return function () {
+        return function () use ($path, $router) {
             return static::__http('POST', $path, $router);
-        }
+        };
     }
 
     /**
@@ -144,12 +145,12 @@ class App
      *
      * @param string $path
      * @param \Closure $router
-     * @return bool
+     * @return \Closure
      */
-    static function GET(string $path = '/', \Closure $router) : bool {
-        return function () {
+    static function GET(string $path = '/', \Closure $router) : \Closure {
+        return function () use ($path, $router) {
             return static::__http('GET', $path, $router);
-        }
+        };
     }
 
     /**
@@ -159,10 +160,10 @@ class App
      * @param \Closure $router
      * @return bool
      */
-    static function PUT(string $path = '/', \Closure $router) : bool {
-        return function () {
+    static function PUT(string $path = '/', \Closure $router) : \Closure {
+        return function () use ($path, $router) {
             return static::__http('PUT', $path, $router);
-        }
+        };
     }
 
     /**
@@ -172,10 +173,10 @@ class App
      * @param \Closure $router
      * @return bool
      */
-    static function DELETE(string $path = '/', \Closure $router) : bool {
-        return function () {
+    static function DELETE(string $path = '/', \Closure $router) : \Closure {
+        return function () use ($path, $router) {
             return static::__http('DELETE', $path, $router);
-        }
+        };
     }
 
     /**
@@ -185,10 +186,10 @@ class App
      * @param \Closure $router
      * @return bool
      */
-    static function HEAD(string $path = '/', \Closure $router) : bool {
-        return function () {
+    static function HEAD(string $path = '/', \Closure $router) : \Closure {
+        return function () use ($path, $router) {
             return static::__http('HEAD', $path, $router);
-        }
+        };
     }
 
     /**
@@ -198,10 +199,10 @@ class App
      * @param \Closure $router
      * @return bool
      */
-    static function OPTIONS(string $path = '/', \Closure $router) : bool {
-        return function () {
+    static function OPTIONS(string $path = '/', \Closure $router) : \Closure {
+        return function () use ($path, $router) {
             return static::__http('OPTIONS', $path, $router);
-        }
+        };
     }
 
     /**
@@ -211,10 +212,10 @@ class App
      * @param \Closure $router
      * @return bool
      */
-    static function TRACE(string $path = '/', \Closure $router) : bool {
-        return function () {
+    static function TRACE(string $path = '/', \Closure $router) : \Closure {
+        return function () use ($path, $router) {
             return static::__http('TRACE', $path, $router);
-        }
+        };
     }
 
     /**
@@ -224,9 +225,9 @@ class App
      * @param \Closure $router
      * @return bool
      */
-    static function CONNECT(string $path = '/', \Closure $router) : bool {
-        return function () {
+    static function CONNECT(string $path = '/', \Closure $router) : \Closure {
+        return function () use ($path, $router) {
             return static::__http('CONNECT', $path, $router);
-        }
+        };
     }
 }
