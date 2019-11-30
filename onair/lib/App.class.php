@@ -36,25 +36,33 @@ class App
         // 환경변수를 다루기 위함이며, 노출되서는 안되는 값들을 넣어서 사용할 수 있다
         // 예를 들어 구글API의 키 값이라던지 ..
         // 호출은 \app('KEY_NAME'); 으로 할 수 있다
-        $fileConfiguration = ROOT_PATH . '../app.cfg.php';
+        $fileConfiguration = ROOT_PATH . 'app.cfg.php';
 
         if ( \file_exists($fileConfiguration) ) {
             $this->configuration = require $fileConfiguration;
         }
 
+        // 모든 URL의 끝은 '/'로 끝나야 한다
+        // 예를 들어 `localhost/a`의 주소는 `localhost/a/`로 이동되어야 한다
+        static::$requestUri = rtrim($_SERVER['REQUEST_URI'], '\/') . '/';
+    }
+
+    /**
+     * 컨피그 파일에 있는 변수의 값을 리턴함
+     *
+     * @param string $key
+     * @return string
+     */
+    function var(string $key) : string {
         $key = trim($key);
 
         if ($key) {
             if (\array_key_exists($key, $this->configuration)) {
                 return $this->configuration[ $key ];
             }
-
-            return false;
         }
 
-        // 모든 URL의 끝은 '/'로 끝나야 한다
-        // 예를 들어 `localhost/a`의 주소는 `localhost/a/`로 이동되어야 한다
-        static::$requestUri = rtrim($_SERVER['REQUEST_URI'], '\/') . '/';
+        return '';
     }
 
     /**

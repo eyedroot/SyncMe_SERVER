@@ -122,8 +122,11 @@ if (! function_exists('dd')) {
     }
 }
 
-if (! function_exists('jsonEnd')) {
-    function jsonEnd(string $message, int $code) : void {
+/**
+ * JSON으로 출력 후 로직을 종료시킴
+ */
+if (! function_exists('endpoint')) {
+    function endpoint(string $message, int $code) : void {
         header('Content-Type: application/json');
         echo json_encode([ 'code' => $code, 'explain' => $message ]);
         exit();
@@ -162,4 +165,67 @@ if (! function_exists('middleware')) {
 
         throw new \ErrorException("{$middle} :: 해당 미들웨어를 찾을 수 없습니다");
     }
+}
+
+/**
+ * Encrypt a message
+ * 
+ * https://stackoverflow.com/questions/16600708/how-do-you-encrypt-and-decrypt-a-php-string
+ * 
+ * @param string $message - message to encrypt
+ * @return string
+ * @throws RangeException
+ */
+function safeEncrypt(string $message): string
+{
+    $key = app()->var('key');
+
+    if (mb_strlen($key, '8bit') !== SODIUM_CRYPTO_SECRETBOX_KEYBYTES) {
+        throw new RangeException('Key is not the correct size (must be 32 bytes).');
+    }
+
+    $nonce = random_bytes(SODIUM_CRYPTO_SECRETBOX_NONCEBYTES);
+
+    $cipher = base64_encode(
+        $nonce.
+        sodium_crypto_secretbox(
+            $message,
+            $nonce,
+            $key
+        )
+    );
+    sodium_memzero($message);
+    sodium_memzero($key);
+    return $cipher;
+}
+
+/**
+ * Decrypt a message
+ * 
+ * https://stackoverflow.com/questions/16600708/how-do-you-encrypt-and-decrypt-a-php-string
+ * 
+ * @param string $encrypted - message encrypted with safeEncrypt()
+ * @param string $key - encryption key
+ * @return string
+ * @throws Exception
+ */
+function safeDecrypt(string $encrypted): string
+{   
+    $key = app()->var('key');
+
+    $decoded = base64_decode($encrypted);
+    $nonce = mb_substr($decoded, 0, SODIUM_CRYPTO_SECRETBOX_NONCEBYTES, '8bit');
+    $ciphertext = mb_substr($decoded, SODIUM_CRYPTO_SECRETBOX_NONCEBYTES, null, '8bit');
+
+    $plain = sodium_crypto_secretbox_open(
+        $ciphertext,
+        $nonce,
+        $key
+    );
+    if (!is_string($plain)) {
+        throw new Exception('Invalid MAC');
+    }
+    sodium_memzero($ciphertext);
+    sodium_memzero($key);
+    return $plain;
 }
