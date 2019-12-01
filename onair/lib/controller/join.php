@@ -27,7 +27,11 @@ return function ($entityBody)
     endpoint( "인터넷 연결을 확인해주세요", user()::CODE_ERROR );
   }
 
-  if (user()::join( $clone )) {
-    endpoint( "회원가입이 완료되었습니다", user()::CODE_COMPLETE );
+  if ($oAuthToken = user()::join( $clone )) {
+    endpoint( 
+      "회원가입이 완료되었습니다", 
+      user()::CODE_COMPLETE,
+      [ "oauth_token" => $oAuthToken ]
+    );
   }
 };

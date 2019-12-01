@@ -126,9 +126,16 @@ if (! function_exists('dd')) {
  * JSON으로 출력 후 로직을 종료시킴
  */
 if (! function_exists('endpoint')) {
-    function endpoint(string $message, int $code) : void {
+    function endpoint(string $message, int $code, array $options = []) : void {
         header('Content-Type: application/json');
-        echo json_encode([ 'code' => $code, 'explain' => $message ]);
+
+        $bulk = [ 'code' => $code, 'explain' => $message ];
+
+        if (count($options) > 0) {
+            $bulk['options'] = $options;
+        }
+
+        echo json_encode($bulk);
         exit();
     }
 }

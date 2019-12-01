@@ -15,8 +15,9 @@
 			middleware('app_oauth')
 		], 
 		[
-			app()::POST('/onair/syncme/test', controller('app.test')),
-			app()::POST('/onair/syncme/login', controller('login'))
+			app()::POST('/onair/syncme/connection-state', controller('connection.state')),
+			app()::POST('/onair/syncme/login', controller('login')),
+			app()::POST('/onair/syncme/test', controller('app.test'))
 		]
 	);
 
