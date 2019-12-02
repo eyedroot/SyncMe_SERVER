@@ -127,4 +127,19 @@ class User
         );
     }
 
+    /**
+     * 유저 데이터를 구함
+     *
+     * @param string $token
+     * @return array
+     */
+    static function get(string $key = 'token', string $token) : array {
+        $db = handleDB('mongo');
+
+        $query = new \MongoDB\Driver\Query([ 'is_active' => static::STATUS_ACTIVE, 'oauth_token' => $token ]);
+        $rows = $db->executeQuery(static::$_db_collection, $query)->toArray();
+
+        return $rows;
+    } 
+
 }

@@ -7,8 +7,17 @@
 	// );
 
 	app()::HTTP([], [
+		// 회원가입
 		app()::POST('/onair/syncme/join', controller('join')),
-		app()::POST('/onair/syncme/login', controller('login'))
+		app()::POST('/onair/syncme/session-test', function () {
+			session_start();
+			print_r($_COOKIE);
+			print_r($_SESSION);
+		}),
+
+		// 로그인
+		// 보안상의 이유로 일반적인 로그인에서 connection-state로 명칭 변경
+		app()::POST('/onair/syncme/connection-state', controller('connection.state'))
 	]);
 
 	app()::HTTP(
@@ -16,7 +25,6 @@
 			middleware('app_oauth')
 		], 
 		[
-			app()::POST('/onair/syncme/connection-state', controller('connection.state')),
 			app()::POST('/onair/syncme/test', controller('app.test'))
 		]
 	);
