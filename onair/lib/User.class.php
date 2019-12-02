@@ -87,12 +87,22 @@ class User
     }
 
     /**
+     * 로그인 로직 구현 (세션이용)
+     *
+     * @param string $token
+     * @return boolean
+     */
+    static function login(string $token) : bool {
+
+    }
+
+    /**
      * 이메일로 인증 토큰을 생성해 줌
      *
      * @param string $email
      * @return string
      */
-    static function getOAuthToken(string $email) : string {
+    private static function getOAuthToken(string $email) : string {
         return \safeEncrypt(
             md5(strrev($email) . time())
         );
