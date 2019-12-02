@@ -13,7 +13,7 @@ spl_autoload_register(function ($className) {
 
     $className = ROOT_PATH . str_replace('\\', DIRECTORY_SEPARATOR, $className);
 
-    foreach (['.class.php'] as $ext) {
+    foreach (['.class.php', '.interface.php'] as $ext) {
         if (file_exists($className . $ext)) {
             require $className . $ext;
             return true;
