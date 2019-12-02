@@ -7,7 +7,8 @@
 	// );
 
 	app()::HTTP([], [
-		app()::POST('/onair/syncme/join', controller('join'))
+		app()::POST('/onair/syncme/join', controller('join')),
+		app()::POST('/onair/syncme/login', controller('login'))
 	]);
 
 	app()::HTTP(
@@ -16,7 +17,6 @@
 		], 
 		[
 			app()::POST('/onair/syncme/connection-state', controller('connection.state')),
-			app()::POST('/onair/syncme/login', controller('login')),
 			app()::POST('/onair/syncme/test', controller('app.test'))
 		]
 	);

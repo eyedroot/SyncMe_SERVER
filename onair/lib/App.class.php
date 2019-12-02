@@ -75,11 +75,12 @@ class App
     static function HTTP(array $middlewares = [], array $controllers = []) : bool {
         // 다음 미들웨어 \Closure에 대한 파라메터
         // 미들웨어에서는 특정 조건을 만족시키지 못 하면 `return false;`로 로직을 중단해버린다
-        $deliver = null;
+        // `$deliver` 처음에는 body를 읽어서 대입해준다
+        $entityBody = file_get_contents('php://input');
 
         foreach ($middlewares as $mw) {
             if ( \is_callable($mw) ) {
-                if (! $deliver = $mw( $deliver )) {
+                if (false === ($entityBody = $mw( $entityBody ))) {
                     // 중간 미들웨어에서 유효하지 않으면
                     // 403 헤더 종료
                     http_response_code(403);
