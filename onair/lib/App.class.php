@@ -35,7 +35,7 @@ class App
         // 루트 홈 디렉토리의 상위 디렉토리안 app.cfg.php 파일을 생성해준다
         // 환경변수를 다루기 위함이며, 노출되서는 안되는 값들을 넣어서 사용할 수 있다
         // 예를 들어 구글API의 키 값이라던지 ..
-        // 호출은 \app('KEY_NAME'); 으로 할 수 있다
+        // 호출은 \app()::->var('KEY_NAME'); 으로 할 수 있다
         $fileConfiguration = ROOT_PATH . 'app.cfg.php';
 
         if ( \file_exists($fileConfiguration) ) {
