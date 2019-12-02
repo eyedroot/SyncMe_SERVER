@@ -32,7 +32,9 @@ class AppFacade extends \onair\lib\abstracts\FacadeAbstract
 
         switch ($dbType) {
             case 'mongo':
-                // @todo 라이브서버와 로컬 개발환경에 대한 구분 로직이 필요함
+                // TODO 라이브서버와 로컬 개발환경에 대한 구분 로직이 필요함
+                // `app.cfg.php` 파일을 활용하여 호스트를 구분해보자
+                // 서버 호스트(byzz.app)일 때는 라이브 서버이며, 그 밖에는 모두 로컬개발환경으로 간주한다
                 static::$facades[ $identifier ] = new \MongoDB\Driver\Manager("mongodb://mongo:27017/syncme");
                 break;
             default:
