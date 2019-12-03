@@ -134,9 +134,19 @@ class User
      * @return array
      */
     static function get(string $key = 'token', string $token) : array {
+        $key = strtolower(trim($key));
         $db = handleDB('mongo');
 
-        $query = new \MongoDB\Driver\Query([ 'is_active' => static::STATUS_ACTIVE, 'oauth_token' => $token ]);
+        switch ($key) {
+            'token':
+            'oauth_token':
+                $key = 'oauth_token';
+                break;
+            default:
+                $key = 'oauth_token';
+        }
+
+        $query = new \MongoDB\Driver\Query([ 'is_active' => static::STATUS_ACTIVE, $key => $token ]);
         $rows = $db->executeQuery(static::$_db_collection, $query)->toArray();
 
         return $rows;
