@@ -27,6 +27,16 @@ class App
     static $supportHttpMethod = ['GET', 'POST', 'HEAD', 'OPTIONS', 'PUT', 'DELETE', 'TRACE', 'CONNECT'];
 
     /**
+     * 쿠키 리스트
+     */
+    static $cookie = $_COOKIE;
+
+    /**
+     * 세션 리스트
+     */
+    static $session = $_SESSION;
+
+    /**
      * App 클래스의 생성자
      *
      * @param string $key
@@ -238,5 +248,33 @@ class App
         return function () use ($path, $router) {
             return static::__http('CONNECT', $path, $router);
         };
+    }
+
+    /**
+     * 현재 세션의 해당하는 key를 돌려줌
+     *
+     * @param string $key
+     * @return string
+     */
+    static function session(string $key = '') : string {
+        if ( \array_key_exists($key, static::$session) ) {
+            return static::$session[ $key ];
+        }
+
+        return '';
+    }
+
+    /**
+     * 쿠키 $key의 해당하는 값을 돌려줌
+     *
+     * @param string $key
+     * @return string
+     */
+    static function cookie(string $key = '') : string {
+        if ( \array_key_exists($key, static::$cookie) ) {
+            return static::$cookie[ $key ];
+        }
+
+        return '';
     }
 }
