@@ -10,6 +10,13 @@ include_once 'autoload.php';
 include_once 'constant.php';
 
 /**
+ * Session Environment
+ */
+ini_set( "session.cache_expire", 0 );
+ini_set( "session.gc_maxlifetime", 14400 );
+session_start();
+
+/**
  * Closure 체크 함수
  */
 if (! function_exists('is_closure')) {
