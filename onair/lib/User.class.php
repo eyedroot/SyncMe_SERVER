@@ -69,6 +69,8 @@ class User
             $entity['password'] = safeEncrypt( $entity['password'] );
         }
 
+        // UTC TimeZone 저장 (#4)
+        // UTC 시간으로 저장 후 출력에서는 UTC+09, KST 시간으로 변환하여 출력
         if (! \array_key_exists('timestamp', $entity)) {
             $entity['timestamp'] = new \MongoDB\BSON\UTCDateTime();
         }
