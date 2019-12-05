@@ -156,7 +156,11 @@ if (! function_exists('controller')) {
         $file = CONTROLLER_PATH . $ctrl . '.php';
 
         if ( \file_exists($file) ) {
-            return include $file;
+            $controllerClosure = include $file;
+
+            if ( is_closure($controllerClosure) ) {
+                return $controllerClosure;
+            }
         }
 
         throw new \ErrorException("{$ctrl} :: 해당 컨트롤러를 찾을 수 없습니다");
