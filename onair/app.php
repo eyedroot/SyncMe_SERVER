@@ -14,6 +14,7 @@ include_once 'constant.php';
  */
 ini_set( "session.cache_expire", 0 );
 ini_set( "session.gc_maxlifetime", 14400 );
+session_name( SESSION_NAME );
 session_start();
 
 /**

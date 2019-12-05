@@ -28,12 +28,12 @@ return function ($entityBody)
         로그인 화면에서 단말기 인증을 진행해주세요.", user()::CODE_ERROR );
     }
 
-    if ( app()::cookie('PHPSESSID') ) {
+    if ( app()::cookie( SESSION_NAME ) ) {
         // 쿠키가 있으면
         // 세션이 유효한지 체크한다
         if ( app()::session('email') && 
                 app()::session('state') == user()::STATUS_ACTIVE  ) {
-                    
+
             endpoint( "GOOD HEALTH. NO_JAPAN.", user()::CODE_COMPLETE );
         } else {
             if ( session_destory() ) {
