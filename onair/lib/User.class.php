@@ -90,12 +90,38 @@ class User
 
     /**
      * 로그인 로직 구현 (세션이용)
+     * 
+     * 다른 확장 가능방향이 생기면 추 후에 수정하는 방향으로 고민
      *
      * @param string $token
-     * @return boolean
+     * @return void endpoint로 json 데이터 출력
      */
-    static function login(string $token) : bool {
+    static function login(string $token) : void {
+        if ( app()::cookie( SESSION_NAME ) ) {
+            // 쿠키가 있으면 
+            // 세션이 유효한지 체크한다
+            if ( app()::session('email') &&
+                    app()::session('state') == user()::STATUS_ACTIVE ) {
+                
+                endpoint( "LOGIN_SUCCESS", user()::CODE_COMPLETE );
+            } else {
+                if ( session_destroy() ) {
+                    $user = user()::get( 'token', $entity->token );
 
+                    if ( count($user) > 0 ) {
+                        foreach ($user as $key => $val) {
+                            $_SESSION[ $key ] = $val;
+                        }
+
+                        endpoint( "LOGIN_SUCCESS_WITH_TOKEN", user()::CODE_COMPLETE );
+                    } else {
+                        endpoint( "LOGIN_FAILURE_WITH_TOKEN", user()::CODE_ERROR );
+                    }
+                } else {
+                    endpoint( "FAILURE_SESSION_INITIALIZE", user()::CODE_ERROR );
+                }
+            }
+        }
     }
 
     /**
