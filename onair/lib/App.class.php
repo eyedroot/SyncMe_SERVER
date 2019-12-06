@@ -264,7 +264,7 @@ class App
      */
     static function session(string $key = '') : string {
         if ( \array_key_exists($key, static::$session) ) {
-            return static::$session[ $key ];
+            return self::$session[ $key ];
         }
 
         return '';
@@ -278,7 +278,7 @@ class App
      */
     static function cookie(string $key = '') : string {
         if ( \array_key_exists($key, static::$cookie) ) {
-            return static::$cookie[ $key ];
+            return self::$cookie[ $key ];
         }
 
         return '';

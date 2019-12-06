@@ -104,24 +104,28 @@ class User
                     app()::session('state') == user()::STATUS_ACTIVE ) {
                 
                 endpoint( "LOGIN_SUCCESS", user()::CODE_COMPLETE );
-            } else {
-                if ( session_destroy() ) {
-                    $user = user()::get( 'token', $token );
+            }
+        } else {
+            // 쿠키가 없으면
+            // 세션을 새로 생성한다
+            if ( session_destroy() ) {
+                $user = user()::get( 'token', $token );
 
-                    if ( count($user) > 0 ) {
-                        foreach ($user as $key => $val) {
-                            $_SESSION[ $key ] = $val;
-                        }
-
-                        endpoint( "LOGIN_SUCCESS_WITH_TOKEN", user()::CODE_COMPLETE );
-                    } else {
-                        endpoint( "LOGIN_FAILURE_WITH_TOKEN", user()::CODE_ERROR );
+                if ( count($user) > 0 ) {
+                    foreach ($user as $key => $val) {
+                        $_SESSION[ $key ] = $val;
                     }
+
+                    endpoint( "LOGIN_SUCCESS_WITH_TOKEN", user()::CODE_COMPLETE );
                 } else {
-                    endpoint( "FAILURE_SESSION_INITIALIZE", user()::CODE_ERROR );
+                    endpoint( "LOGIN_FAILURE_WITH_TOKEN", user()::CODE_ERROR );
                 }
+            } else {
+                endpoint( "FAILURE_SESSION_INITIALIZE", user()::CODE_ERROR );
             }
         }
+
+        endpoint( "I_DONT_KNOW_CODE", user()::CODE_ERROR );
     }
 
     /**
@@ -166,8 +170,8 @@ class User
         $db = handleDB('mongo');
 
         switch ($key) {
-            'token':
-            'oauth_token':
+            case 'token':
+            case 'oauth_token':
                 $key = 'oauth_token';
                 break;
             default:

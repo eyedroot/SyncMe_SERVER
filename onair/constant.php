@@ -24,5 +24,5 @@ if (! defined('MIDDLEWARE_PATH')) {
  * Session Name
  */
 if (! defined('SESSION_NAME')) {
-    define('SESSION_NAME', '__onair_session__');
+    define('SESSION_NAME', 'ONAIRSESS');
 }
