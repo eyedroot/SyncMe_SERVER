@@ -29,12 +29,12 @@ class App
     /**
      * 쿠키 리스트
      */
-    static $cookie = $_COOKIE;
+    static $cookie;
 
     /**
      * 세션 리스트
      */
-    static $session = $_SESSION;
+    static $session;
 
     /**
      * App 클래스의 생성자
@@ -55,6 +55,12 @@ class App
         // 모든 URL의 끝은 '/'로 끝나야 한다
         // 예를 들어 `localhost/a`의 주소는 `localhost/a/`로 이동되어야 한다
         static::$requestUri = rtrim($_SERVER['REQUEST_URI'], '\/') . '/';
+
+        // 쿠키값 복사하여 사용
+        static::$cookie = $_COOKIE;
+
+        // 세션값 복사하여 사용
+        static::$session = $_SESSION;
     }
 
     /**
