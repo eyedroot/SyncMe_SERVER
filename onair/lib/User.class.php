@@ -106,7 +106,7 @@ class User
                 endpoint( "LOGIN_SUCCESS", user()::CODE_COMPLETE );
             } else {
                 if ( session_destroy() ) {
-                    $user = user()::get( 'token', $entity->token );
+                    $user = user()::get( 'token', $token );
 
                     if ( count($user) > 0 ) {
                         foreach ($user as $key => $val) {

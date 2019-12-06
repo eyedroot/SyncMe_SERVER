@@ -29,5 +29,5 @@ return function ($entityBody)
     }
 
     // login
-    user()::login();
+    user()::login( $entity->token );
 };
