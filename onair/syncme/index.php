@@ -9,10 +9,8 @@
 	app()::HTTP([], [
 		// 회원가입
 		app()::POST('/onair/syncme/join', controller('join')),
-		app()::POST('/onair/syncme/session-test', function () {
-			session_start();
-			print_r($_COOKIE);
-			print_r($_SESSION);
+		app()::POST('/onair/syncme/phpinfo', function () {
+			phpinfo();
 		}),
 
 		// 로그인
