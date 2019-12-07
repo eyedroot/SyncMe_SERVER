@@ -7,7 +7,6 @@ include_once 'app.php';
  */
 return function ($entityBody) 
 {
-    session_start();
     $entity = \toObject( json_decode($entityBody, JSON_FORCE_OBJECT) );
 
     // token이 없으면
