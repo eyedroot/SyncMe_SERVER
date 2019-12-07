@@ -11,6 +11,7 @@
 		app()::POST('/onair/syncme/join', controller('join')),
 		app()::GET('/onair/syncme/test', function () {
 			// dd($_SERVER);
+			// echo 19; exit;
 		}),
 
 		// 로그인

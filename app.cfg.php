@@ -12,5 +12,5 @@ return [
     'mongodb_port'     => 27017,
     'mongodb_dbname'   => 'syncme',
     'mongodb_id'       => 'syncme_server',
-    'mongodb_password' => 'THL8MZ8kLqHTJetYts8maW70n/602id6+x9WXHq7/zydV0s2Y60/lnwMSegKuNEb/hmqNA=='
+    'mongodb_password' => 'OQX9BGAYufNqfgiWsgwf6WyIkZKVgBnnlZ8Vh5DmNh/b+6AGpr6a6qtwBPu1V2CbxXzCYg=='
 ];
