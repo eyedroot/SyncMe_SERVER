@@ -10,7 +10,8 @@
 		// 회원가입
 		app()::POST('/onair/syncme/join', controller('join')),
 		app()::GET('/onair/syncme/test', function () {
-			dd($_SERVER);
+			// dd($_SERVER);
+			dd(handleDB('mongo'));
 		}),
 
 		// 로그인
