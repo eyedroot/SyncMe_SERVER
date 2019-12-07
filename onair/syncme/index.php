@@ -11,7 +11,6 @@
 		app()::POST('/onair/syncme/join', controller('join')),
 		app()::GET('/onair/syncme/test', function () {
 			// dd($_SERVER);
-			dd(safeEncrypt('dla2047921@#'));
 		}),
 
 		// 로그인
