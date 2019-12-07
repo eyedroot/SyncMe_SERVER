@@ -187,6 +187,15 @@ if (! function_exists('middleware')) {
 }
 
 /**
+ * 현재 환경이 프로덕션 환경인지 체크
+ */
+if (! function_exists('isProd')) {
+    function isProd() : bool {
+        return !! ( $_SERVER['SERVER_NAME'] == 'byzz.app' );
+    }
+}
+
+/**
  * Encrypt a message
  * 
  * https://stackoverflow.com/questions/16600708/how-do-you-encrypt-and-decrypt-a-php-string
