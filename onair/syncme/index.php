@@ -24,25 +24,7 @@
 			middleware('app_oauth')
 		], 
 		[
-			// app()::POST('/onair/syncme/test', controller('app.test'))
+			// 프로파일 이미지 업로드 
+			app()::POST('/onair/syncme/upload-photo', controller('profile.upload'))
 		]
 	);
-
-	/**
-	 * gcpid (index)
-	 * connection_date
-	 * oauth_key
-	 */
-	// $bulk->update(
-	// 	['gcpid' => $params->gcpid],
-	// 	[
-	// 		'$set' => [
-	// 			'connection_date' => '',
-	// 			'oauth_key' => ''
-	// 		]
-	// 	],
-	// 	['upsert' => true]
-	// );
-
-	// $result = $mongo->executeBulkWrite('syncme.device_security', $bulk);
-	// print_r($result);

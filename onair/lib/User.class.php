@@ -112,7 +112,7 @@ class User
             // 쿠키가 있으면 
             // 세션이 유효한지 체크한다
             if ( app()::session('email') &&
-                    app()::session('state') == user()::STATUS_ACTIVE ) {
+                    app()::session('is_active') == user()::STATUS_ACTIVE ) {
                 
                 endpoint( "LOGIN_SUCCESS", user()::CODE_COMPLETE );
             }
@@ -127,10 +127,18 @@ class User
                 );
             }
 
-            if ( count($user) > 0 ) {
-                foreach ($user as $key => $val) {
-                    $_SESSION[ $key ] = $val;
-                }
+            // print_r($user);
+
+            if ( count($user) == 1 ) {
+                $user = $user[0];
+
+                $_SESSION['_id']         = $user->_id;
+                $_SESSION['email']       = $user->email;
+                $_SESSION['nofriend']    = $user->nofriend;
+                $_SESSION['gcpid']       = $user->gcpid;
+                $_SESSION['timestamp']   = $user->timestamp;
+                $_SESSION['oauth_token'] = $user->oauth_token;
+                $_SESSION['is_active']   = $user->is_active;
 
                 endpoint( "LOGIN_SUCCESS_WITH_TOKEN", user()::CODE_COMPLETE );
             } else {
@@ -201,13 +209,16 @@ class User
         $rows = $db->executeQuery(static::$_db_collection, $query)->toArray();
 
         if ($key == 'login') {
-            $copy = $rows['password'];
-            $rows['password'] = \safeDecrypt( $rows['password'] );
+            $oneUser = $rows[0];
 
-            if ($rows['password'] != $token['password']) {
+            $copyPassword = $oneUser->password;
+            $oneUser->password = \safeDecrypt( $oneUser->password );
+
+            if ($oneUser->password != $token['password']) {
+                // remove userdata
                 $rows = [];
             } else {
-                $rows['password'] = $copy;
+                $oneUser->password = $copyPassword;
             }
         }
 
