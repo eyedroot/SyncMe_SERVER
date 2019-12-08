@@ -27,6 +27,14 @@ return function ($entityBody)
         로그인 화면에서 단말기 인증을 진행해주세요.", user()::CODE_ERROR );
     }
 
+    if (! $entity->login_email) {
+        $entity->login_email = '';
+    }
+
+    if (! $entity->login_password) {
+        $entity->login_password = '';
+    }
+
     // login
-    user()::login( $entity->token );
+    user()::login( $entity->token, $entity->login_email, $entity->login_password );
 };

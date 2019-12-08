@@ -26,3 +26,7 @@ if (! defined('MIDDLEWARE_PATH')) {
 if (! defined('SESSION_NAME')) {
     define('SESSION_NAME', 'ONAIRSESS');
 }
+
+if (! defined('SESSION_PATH')) {
+    define('SESSION_PATH', '/var/www/SyncMe_SESSION');
+}

@@ -12,8 +12,9 @@ include_once 'constant.php';
 /**
  * Session Environment
  */
-ini_set( "session.cache_expire", 0 );
-ini_set( "session.gc_maxlifetime", 14400 );
+ini_set('session.cookie_lifetime', 60 * 60 * 24 * 100);
+ini_set('session.gc_maxlifetime', 60 * 60 * 24 * 100);
+// ini_set('session.save_path', SESSION_PATH);
 session_name( SESSION_NAME );
 session_start();
 
@@ -143,7 +144,7 @@ if (! function_exists('endpoint')) {
             $bulk['options'] = $options;
         }
 
-        echo json_encode($bulk);
+        echo json_encode($bulk, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
         exit();
     }
 }

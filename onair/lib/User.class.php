@@ -96,8 +96,19 @@ class User
      * @param string $token
      * @return void endpoint로 json 데이터 출력
      */
-    static function login(string $token) : void {
-        if ( app()::cookie( SESSION_NAME ) ) {
+    static function login(string $token = '', string $email = '', string $password = '') : void {
+        $user = [];
+
+        $token = str_replace(
+            '\/',
+            '/',
+            $token
+        );
+
+        // app.php에서 바로 session_start();
+        // 코드가 실행되기 때문에 Guest도 세션이 생성 될 수 있다
+        // 그래서 체크해줘야 한다
+        if ( app()::cookie( SESSION_NAME ) && app()::session('email') && app()::session('gcpid') ) {
             // 쿠키가 있으면 
             // 세션이 유효한지 체크한다
             if ( app()::session('email') &&
@@ -108,20 +119,23 @@ class User
         } else {
             // 쿠키가 없으면
             // 세션을 새로 생성한다
-            if ( session_destroy() ) {
-                $user = user()::get( 'token', $token );
-
-                if ( count($user) > 0 ) {
-                    foreach ($user as $key => $val) {
-                        $_SESSION[ $key ] = $val;
-                    }
-
-                    endpoint( "LOGIN_SUCCESS_WITH_TOKEN", user()::CODE_COMPLETE );
-                } else {
-                    endpoint( "LOGIN_FAILURE_WITH_TOKEN", user()::CODE_ERROR );
-                }
+            if ($token) {
+                $user = user()::get( 'token', [$token] );
             } else {
-                endpoint( "FAILURE_SESSION_INITIALIZE", user()::CODE_ERROR );
+                $user = user()::get( 'login', 
+                    ['email' => $email,  'password' => $password] 
+                );
+            }
+
+            if ( count($user) > 0 ) {
+                foreach ($user as $key => $val) {
+                    $_SESSION[ $key ] = $val;
+                }
+
+                endpoint( "LOGIN_SUCCESS_WITH_TOKEN", user()::CODE_COMPLETE );
+            } else {
+                session_destroy();
+                endpoint( "LOGIN_FAILURE_WITH_TOKEN_AND_NOT_SAME_EMAIL_PASSWORD", user()::CODE_ERROR );
             }
         }
 
@@ -165,21 +179,37 @@ class User
      * @param string $token
      * @return array
      */
-    static function get(string $key = 'token', string $token) : array {
+    static function get(string $key = 'token', array $token) : array {
         $key = strtolower(trim($key));
         $db = handleDB('mongo');
+        $where = [];
 
         switch ($key) {
             case 'token':
             case 'oauth_token':
-                $key = 'oauth_token';
-                break;
+                $where = [ 'oauth_token' => current($token) ];
+            break;
+            case 'login':
+                $where = [ 'email' => $token['email'] ];
+            break;
             default:
-                $key = 'oauth_token';
         }
 
-        $query = new \MongoDB\Driver\Query([ 'is_active' => static::STATUS_ACTIVE, $key => $token ]);
+        $where = array_merge([ 'is_active' => static::STATUS_ACTIVE ], $where);
+
+        $query = new \MongoDB\Driver\Query( $where );
         $rows = $db->executeQuery(static::$_db_collection, $query)->toArray();
+
+        if ($key == 'login') {
+            $copy = $rows['password'];
+            $rows['password'] = \safeDecrypt( $rows['password'] );
+
+            if ($rows['password'] != $token['password']) {
+                $rows = [];
+            } else {
+                $rows['password'] = $copy;
+            }
+        }
 
         return $rows;
     } 
