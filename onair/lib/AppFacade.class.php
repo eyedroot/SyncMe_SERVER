@@ -119,16 +119,31 @@ class AppFacade extends \onair\lib\abstracts\FacadeAbstract
      * @param string $key
      * @return \onair\lib\FileHandler
      */
-    static function getFileHandler() : \onair\lib\FileHandler {
+    static function getFileHandler(array $hf) : \onair\lib\FileHandler {
         $identifier = 'filehandler';
 
         if (\array_key_exists($identifier, static::$facades)) {
             return static::$facades[ $identifier ];
         }
 
-        static::$facades[ $identifier ] = new \onair\lib\FileHandler();
+        static::$facades[ $identifier ] = new \onair\lib\FileHandler($hf);
 
         return static::$facades[ $identifier ];
+    }
+
+    /**
+     * static으로 선언한 핸들러를 파괴한다
+     *
+     * @return boolean
+     */
+    static function eliminateHandler(string $handlerName) : bool {
+        switch ($handlerName) {
+            case 'handleFile':
+                unset(static::$facades['filehandler']);
+                return true;
+            default:
+                return false;
+        }
     }
 }
 

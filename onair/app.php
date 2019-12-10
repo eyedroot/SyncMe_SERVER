@@ -97,6 +97,15 @@ if (! function_exists('handleHeader')) {
 }
 
 /**
+ * static으로 선언한 클래스를 파괴한다
+ */
+if (! function_exists('eliminateHandler')) {
+    function eliminateHandler(string $handlerName) : bool {
+
+    }
+}
+
+/**
  * toObject
  */
 if (! function_exists('toObject')) {

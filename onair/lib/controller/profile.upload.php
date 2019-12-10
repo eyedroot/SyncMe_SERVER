@@ -15,6 +15,14 @@ return function ($entityBody)
     \endpoint( "UPLOAD_FAILED", handleFile()::CODE_ERROR );
   }
 
-  
+  $hf = handleFile( $_FILES );
+
+  if ( $hf->integrity($hf) ) {
+    if ($result = $hf->upload($hf)) {
+      
+    }
+  }
+
+  \eliminateHandler('handleFile');
   
 };
