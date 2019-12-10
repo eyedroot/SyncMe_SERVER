@@ -6,8 +6,8 @@
 
 ```json
 {
-    "_id": "\MongoDB\Driver\ObjectId()",
-    "user_id": "user 콜렉션의 \MongoDB\Driver\ObjectId()",
+    "_id": "\\MongoDB\\Driver\\ObjectId()",
+    "user_id": "user 콜렉션의 \\MongoDB\\Driver\\ObjectId()",
     "photo": [
         {
             "filename": "encrpyt(id + time + filename)",
@@ -15,7 +15,7 @@
             "filesize": "integer",
             "virtual_dir": "z00000000",
             "tag": "1[, 2, 3, 4]",
-            "timestamp": "\MongoDB\Driver\UTCObject()"
+            "timestamp": "\\MongoDB\\Driver\\UTCObject()"
         },
     ]
 }
