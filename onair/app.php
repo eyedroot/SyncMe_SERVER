@@ -69,6 +69,17 @@ if (! function_exists('handleRequest')) {
 }
 
 /**
+ * FileHandler
+ * 
+ * 모든 파일을 컨트롤하고 업로드를 관리하는 클래스
+ */
+if (! function_exists('handleFile')) {
+    function handleFile() {
+        return \onair\lib\AppFacade::getFileHandler();
+    }
+}
+
+/**
  * handleHeader
  * 
  * $_SERVER 헤더에 담긴 키를 찾아 리턴한다
@@ -205,8 +216,7 @@ if (! function_exists('isProd')) {
  * @return string
  * @throws RangeException
  */
-function safeEncrypt(string $message): string
-{
+function safeEncrypt(string $message): string {
     $key = app()->var('key');
 
     if (mb_strlen($key, '8bit') !== SODIUM_CRYPTO_SECRETBOX_KEYBYTES) {
@@ -238,8 +248,7 @@ function safeEncrypt(string $message): string
  * @return string
  * @throws Exception
  */
-function safeDecrypt(string $encrypted): string
-{   
+function safeDecrypt(string $encrypted): string {
     $key = app()->var('key');
 
     $decoded = base64_decode($encrypted);

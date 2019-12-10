@@ -77,7 +77,7 @@ class AppFacade extends \onair\lib\abstracts\FacadeAbstract
      * App 인스턴트 리턴
      *
      * @param string $key
-     * @return \onair\lib\App
+     * @return \onair\lib\User
      */
     static function getUser() : \onair\lib\User {
         $identifier = 'user';
@@ -109,6 +109,24 @@ class AppFacade extends \onair\lib\abstracts\FacadeAbstract
             \strtoupper($method),
             $key
         );
+
+        return static::$facades[ $identifier ];
+    }
+
+    /**
+     * FileHandler 리턴
+     *
+     * @param string $key
+     * @return \onair\lib\FileHandler
+     */
+    static function getFileHandler() : \onair\lib\FileHandler {
+        $identifier = 'filehandler';
+
+        if (\array_key_exists($identifier, static::$facades)) {
+            return static::$facades[ $identifier ];
+        }
+
+        static::$facades[ $identifier ] = new \onair\lib\FileHandler();
 
         return static::$facades[ $identifier ];
     }

@@ -12,6 +12,7 @@
 		app()::GET('/onair/syncme/test', function () {
 			// dd($_SERVER);
 			// echo 19; exit;
+			phpinfo();
 		}),
 
 		// 로그인
