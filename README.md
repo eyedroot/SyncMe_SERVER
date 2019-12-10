@@ -6,16 +6,16 @@
 
 ```json
 {
-    _id:
-    user_id:
-    photo: [
+    "_id": "\MongoDB\Driver\ObjectId()",
+    "user_id": "user 콜렉션의 \MongoDB\Driver\ObjectId()",
+    "photo": [
         {
-            filename: "encrpyt(id + time + filename)",
-            filetype: "integer",
-            filesize: "integer",
-            virtual_dir: "z00000000",
-            tag: "1[, 2, 3, 4]",
-            timestamp: "\MongoDB\Driver\UTCObject()"
+            "filename": "encrpyt(id + time + filename)",
+            "filetype": "integer",
+            "filesize": "integer",
+            "virtual_dir": "z00000000",
+            "tag": "1[, 2, 3, 4]",
+            "timestamp": "\MongoDB\Driver\UTCObject()"
         },
     ]
 }
