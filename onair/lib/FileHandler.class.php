@@ -15,6 +15,7 @@ class FileHandler
      * 업로드가 허용된 파일 타입들
      */
     static $allowedType = [
+        "multipart/form-data",
         "image/jpeg",
         "image/png"
     ];
@@ -61,7 +62,11 @@ class FileHandler
      */
     function __construct(array $files) {
         if (count($files) > 0) {
-            $this->files = $files;
+            if (\array_key_exists('image', $files)) {
+                $this->files = $files['image'];
+            } else {
+                throw new \ErrorException("\$_FILES 변수에 `image` 키를 찾을 수 없습니다.");
+            }
 
             if (\array_key_exists('name', $this->files)) {
                 $this->extension = strtolower(end(explode('.', $this->files['name'])));
@@ -76,7 +81,7 @@ class FileHandler
      * @return boolean
      */
     function integrity() : bool {
-        if (\array_key_exists('error', $this->files) && ! $this->files['error']) {
+        if (\array_key_exists('error', $this->files) && $this->files['error'] == 0) {
             if (in_array($this->files['type'], static::$allowedType)) {
                 if (in_array($this->extension, static::$allowedExtension)) {
                     return true;
@@ -105,7 +110,10 @@ class FileHandler
                         base64_encode($name)
                     );
 
-                return \safeEncrypt($t);
+                $t = safeEncrypt($t);
+                $t = str_replace('/', '$$', $t);
+
+                return $t;
             }
 
             return '';
@@ -114,13 +122,15 @@ class FileHandler
         if ( $touchName = $touch($this->files['name']) ) {
             $fullPath = self::$directory . self::$virtualDir . '/' . $touchName . $this->extension;
 
-            if (! \file_exists($fullPath)) {
+            if (! file_exists($fullPath)) {
                 move_uploaded_file($this->files['tmp_name'], $fullPath);
+                $imageSize = getimagesize($fullPath);
 
                 return [
-                    "filename" => $touchName,
-                    "filetype" => $this->files['type'],
-                    "filesize" => $this->files['size'],
+                    "filename"   => $touchName,
+                    "filetype"   => $this->extension,
+                    "filesize"   => $this->files['size'],
+                    "imagesize"  => $imageSize,
                     "virtualdir" => static::$virtualDir
                 ];
             }

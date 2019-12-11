@@ -74,8 +74,8 @@ if (! function_exists('handleRequest')) {
  * 모든 파일을 컨트롤하고 업로드를 관리하는 클래스
  */
 if (! function_exists('handleFile')) {
-    function handleFile() {
-        return \onair\lib\AppFacade::getFileHandler();
+    function handleFile($files) {
+        return \onair\lib\AppFacade::getFileHandler($files);
     }
 }
 
@@ -101,7 +101,7 @@ if (! function_exists('handleHeader')) {
  */
 if (! function_exists('eliminateHandler')) {
     function eliminateHandler(string $handlerName) : bool {
-
+        return !! \onair\lib\AppFacade::eliminateHandler($handlerName);
     }
 }
 
