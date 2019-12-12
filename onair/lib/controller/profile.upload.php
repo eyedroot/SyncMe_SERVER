@@ -23,10 +23,13 @@ return function ($entityBody)
 
   if ( $hf->integrity() ) {
     if ($result = $hf->upload($hf)) {
-      print_r($result);
+      if ( user()::updateProfile($result) ) {
+        endpoint( "SUCCESS_UPDATE_USER_PROFILE", user()::CODE_COMPLETE )
+      }
     }
   }
 
   eliminateHandler('handleFile');
+  endpoint( "UPLOAD_FAILED_IN_INTEGRITY", $hf::CODE_ERROR );
   
 };
