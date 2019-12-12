@@ -23,7 +23,10 @@ return function ($entityBody)
 
   if ( $hf->integrity() ) {
     if ($result = $hf->upload($hf)) {
-      if ( user()::updateProfile($result) ) {
+      // TODO `tag`가 정상적으로 들어가는지 확인
+      $result['tag'] = $entity->tag;
+
+      if ( userProfile()::update($result) ) {
         endpoint( "SUCCESS_UPDATE_USER_PROFILE", user()::CODE_COMPLETE )
       }
     }

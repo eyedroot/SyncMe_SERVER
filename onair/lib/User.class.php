@@ -184,10 +184,12 @@ class User
     /**
      * 유저 데이터를 구함
      *
+     * @param string $key token|oauth_token|login
      * @param string $token
+     * @param array $options
      * @return array
      */
-    static function get(string $key = 'token', array $token) : array {
+    static function get(string $key = 'token', array $token, array $options = []) : array {
         $key = strtolower(trim($key));
         $db = handleDB('mongo');
         $where = [];
@@ -205,7 +207,7 @@ class User
 
         $where = array_merge([ 'is_active' => static::STATUS_ACTIVE ], $where);
 
-        $query = new \MongoDB\Driver\Query( $where );
+        $query = new \MongoDB\Driver\Query( $where, $options );
         $rows = $db->executeQuery(static::$_db_collection, $query)->toArray();
 
         if ($key == 'login') {
