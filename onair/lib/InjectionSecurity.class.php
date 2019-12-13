@@ -49,13 +49,13 @@ class InjectionSecurity
     function __construct(string $method = 'POST', string $key) {
         switch ($method) {
             case 'POST':
-                $request = & $_POST;
+                $this->request = & $_POST;
             break;
             case 'GET':
-                $request = & $_GET;
+                $this->request = & $_GET;
             break;
             default:
-            $request = & $_POST;
+            $this->request = & $_POST;
         }
 
         $this->key = $key;
@@ -88,7 +88,7 @@ class InjectionSecurity
      * @return string|integer|float|double
      */
     function get() {
-        if (! $this->disposalMethod) {
+        if ($this->disposalMethod) {
             return $this->{ $this->disposalMethod }();
         }
 

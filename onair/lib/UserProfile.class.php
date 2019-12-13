@@ -2,7 +2,7 @@
 
 namespace onair\lib;
 
-class UserProfile extends \onair\lib\User
+class UserProfile
 {
     /**
      * 유저 프로파일 정보가 담기는 콜렉션 이름
@@ -19,6 +19,7 @@ class UserProfile extends \onair\lib\User
     static function update(array $udata) {
         $db = handleDB('mongo');
         $bulk = new \MongoDB\Driver\BulkWrite();
+        $photoUpdator = [];
 
         // TODO 이렇게 하면 photo 필드만 나오지는 확인
         // `projection`
@@ -27,11 +28,22 @@ class UserProfile extends \onair\lib\User
             [ "projection" => ["photo" => 1] ]
         );
 
-        $pProfile->photo[] = $udata;
+        
+        if ( is_object($pProfile) && property_exists($pProfile, 'photo') ) {
+            $photoUpdator = $pProfile->photo;
+            $photoUpdator[] = (object) $udata;
+        } else {
+            $photoUpdator[] = $udata;
+        }
+        
         $bulk->update(
-            [ "user_id" => app()->session('_id') ],
-            [ "$set" => [ "photo" => $pProfile ] ],
-            [ "$upsert" => true ]
+            [ "user_id" => new \MongoDB\BSON\ObjectId( app()->session('_id') ) ],
+            [ 
+                "user_id"          => new \MongoDB\BSON\ObjectId( app()->session('_id') ),
+                "photo"            => $photoUpdator,
+                "update_timestamp" => new \MongoDB\BSON\UTCDateTime() 
+            ],
+            [ "upsert" => true ]
         );
 
         return !! $db->executeBulkWrite(self::$_db_collection, $bulk);
@@ -46,7 +58,9 @@ class UserProfile extends \onair\lib\User
      */
     static function get(string $_id, array $options = []) {
         $db = handleDB('mongo');
-        $where = [];
+        $where = [
+            'user_id' => new \MongoDB\BSON\ObjectId( $_id )
+        ];
 
         $query = new \MongoDB\Driver\Query($where, $options);
         $rows = $db->executeQuery(self::$_db_collection, $query)->toArray();

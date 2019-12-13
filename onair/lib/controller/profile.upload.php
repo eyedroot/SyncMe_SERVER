@@ -7,9 +7,7 @@ include_once 'app.php';
  */
 return function ($entityBody) 
 {
-  $entity = \toObject(
-    json_decode($entityBody, JSON_FORCE_OBJECT)
-  );
+  $tag = handleRequest('tag')->disposal('int')->get();
 
   try {
     $hf = handleFile( $_FILES );
@@ -24,7 +22,7 @@ return function ($entityBody)
   if ( $hf->integrity() ) {
     if ($result = $hf->upload($hf)) {
       // TODO `tag`가 정상적으로 들어가는지 확인
-      $result['tag'] = $entity->tag;
+      $result['tag'] = $tag;
 
       if ( userProfile()::update($result) ) {
         endpoint( "SUCCESS_UPDATE_USER_PROFILE", user()::CODE_COMPLETE );
