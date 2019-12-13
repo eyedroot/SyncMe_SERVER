@@ -120,7 +120,7 @@ class FileHandler
         };
 
         if ( $touchName = $touch($this->files['name']) ) {
-            $fullPath = self::$directory . self::$virtualDir . '/' . $touchName . $this->extension;
+            $fullPath = self::$directory . self::$virtualDir . '/' . $touchName . '.' . $this->extension;
 
             if (! file_exists($fullPath)) {
                 move_uploaded_file($this->files['tmp_name'], $fullPath);
