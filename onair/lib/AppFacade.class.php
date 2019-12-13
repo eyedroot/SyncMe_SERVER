@@ -74,9 +74,8 @@ class AppFacade extends \onair\lib\abstracts\FacadeAbstract
     }
 
     /**
-     * App 인스턴트 리턴
+     * User 인스턴트 리턴
      *
-     * @param string $key
      * @return \onair\lib\User
      */
     static function getUser() : \onair\lib\User {
@@ -87,6 +86,23 @@ class AppFacade extends \onair\lib\abstracts\FacadeAbstract
         }
 
         static::$facades[ $identifier ] = new \onair\lib\User();
+
+        return static::$facades[ $identifier ];
+    }
+
+    /**
+     * UserProfile 인스턴트 리턴
+     *
+     * @return \onair\lib\User
+     */
+    static function getUserProfile() : \onair\lib\UserProfile {
+        $identifier = 'userProfile';
+
+        if (\array_key_exists($identifier, static::$facades)) {
+            return static::$facades[ $identifier ];
+        }
+
+        static::$facades[ $identifier ] = new \onair\lib\UserProfile();
 
         return static::$facades[ $identifier ];
     }

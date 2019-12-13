@@ -37,7 +37,7 @@ if (! function_exists('app')) {
 }
 
 /**
- * 앱의 설정 파일 로드
+ * User 클래스
  */
 if (! function_exists('user')) {
     function user() {
@@ -45,6 +45,14 @@ if (! function_exists('user')) {
     }
 }
 
+/**
+ * UserProfile 클래스
+ */
+if (! function_exists('userProfile')) {
+    function userProfile() {
+        return \onair\lib\AppFacade::getUserProfile();
+    }
+}
 
 /**
  * handleDB

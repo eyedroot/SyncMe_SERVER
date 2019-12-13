@@ -27,7 +27,7 @@ return function ($entityBody)
       $result['tag'] = $entity->tag;
 
       if ( userProfile()::update($result) ) {
-        endpoint( "SUCCESS_UPDATE_USER_PROFILE", user()::CODE_COMPLETE )
+        endpoint( "SUCCESS_UPDATE_USER_PROFILE", user()::CODE_COMPLETE );
       }
     }
   }
