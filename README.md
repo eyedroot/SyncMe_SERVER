@@ -17,7 +17,21 @@
             "tag": "1[, 2, 3, 4]",
             "timestamp": "\\MongoDB\\Driver\\UTCObject()"
         },
-    ]
+    ],
+    "nickname": "",
+    "religion": "",
+    "age": "integer",
+    "gender": "1 or 2",
+    "distance": "integer",
+    "hobby": [
+        "ObjectId("")",
+        "ObjectId("")"
+    ],
+    "food": [
+        "ObjectId("")",
+        "ObjectId("")"
+    ],
+    "introduce": ""
 }
 ```
 

@@ -16,7 +16,7 @@ class UserProfile
      * @param array $projection
      * @return void
      */
-    static function update(array $udata) {
+    static function updatePhoto(array $udata) {
         $db = handleDB('mongo');
         $bulk = new \MongoDB\Driver\BulkWrite();
         $photoUpdator = [];
@@ -28,7 +28,6 @@ class UserProfile
             [ "projection" => ["photo" => 1] ]
         );
 
-        
         if ( is_object($pProfile) && property_exists($pProfile, 'photo') ) {
             $photoUpdator = $pProfile->photo;
             $photoUpdator[] = (object) $udata;
@@ -38,11 +37,40 @@ class UserProfile
         
         $bulk->update(
             [ "user_id" => new \MongoDB\BSON\ObjectId( app()->session('_id') ) ],
+            [
+                '$set' => [ 
+                    "user_id"          => new \MongoDB\BSON\ObjectId( app()->session('_id') ),
+                    "update_timestamp" => new \MongoDB\BSON\UTCDateTime(),
+                    "photo"            => $photoUpdator
+                ]
+            ],
+            [ "upsert" => true ]
+        );
+
+        return !! $db->executeBulkWrite(self::$_db_collection, $bulk);
+    }
+
+    /**
+     * 회원정보 프로필 데이트
+     *
+     * @param array $pdata
+     * @return void
+     */
+    static function updateProfile(array $pdata) {
+        $db = handleDB('mongo');
+        $bulk = new \MongoDB\Driver\BulkWrite();
+
+        $merged = array_merge(
             [ 
                 "user_id"          => new \MongoDB\BSON\ObjectId( app()->session('_id') ),
-                "photo"            => $photoUpdator,
                 "update_timestamp" => new \MongoDB\BSON\UTCDateTime() 
             ],
+            $pdata
+        );
+
+        $bulk->update(
+            [ "user_id" => new \MongoDB\BSON\ObjectId( app()->session('_id') ) ],
+            [ '$set' => $merged ],
             [ "upsert" => true ]
         );
 

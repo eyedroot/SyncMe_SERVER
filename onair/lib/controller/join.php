@@ -11,12 +11,12 @@ return function ($entityBody)
   $clone = $entity;
   $entity = toObject( $entity );
 
-  if ( user()::isExists($entity->email) ) {
-    endpoint( "이미 가입되어 있는 이메일입니다", user()::CODE_ERROR );
-  }
-
   if (! filter_var($entity->email, FILTER_VALIDATE_EMAIL) ) {
     endpoint( "이메일 형식이 유효하지 않습니다", user()::CODE_ERROR );
+  }
+
+  if ( user()::isExists($entity->email) ) {
+    endpoint( "이미 가입되어 있는 이메일입니다", user()::CODE_ERROR );
   }
 
   if (! $entity->password) {

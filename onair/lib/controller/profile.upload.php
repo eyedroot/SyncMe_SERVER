@@ -24,8 +24,9 @@ return function ($entityBody)
       // TODO `tag`가 정상적으로 들어가는지 확인
       $result['tag'] = $tag;
 
-      if ( userProfile()::update($result) ) {
-        endpoint( "SUCCESS_UPDATE_USER_PROFILE", user()::CODE_COMPLETE );
+      if ( userProfile()::updatePhoto($result) ) {
+        $options = $result;
+        endpoint( "SUCCESS_UPDATE_USER_PROFILE", user()::CODE_COMPLETE, $options );
       }
     }
   }

@@ -26,6 +26,10 @@
 		], 
 		[
 			// 프로파일 이미지 업로드 
-			app()::POST('/onair/syncme/upload-photo', controller('profile.upload'))
+			app()::POST('/onair/syncme/upload-photo', controller('profile.upload')),
+			// 프로필 업데이트
+			app()::POST('/onair/syncme/profile-update', controller('profile.update')),
+			// 프로필 취미 음식 업데이트
+			app()::POST('/onair/syncme/profile-condition', controller('profile.condition'))
 		]
 	);
