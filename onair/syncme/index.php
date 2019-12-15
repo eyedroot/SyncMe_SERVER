@@ -32,6 +32,6 @@
 			// 프로파일 저장된 데이터 가져오기
 			app()::POST('/onair/syncme/profile-preloader', controller('profile.preloader')),
 			// 프로필 취미 음식 업데이트
-			app()::POST('/onair/syncme/profile-condition', controller('profile.condition'))
+			app()::POST('/onair/syncme/profile-tag', controller('profile.tag'))
 		]
 	);

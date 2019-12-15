@@ -8,6 +8,16 @@ namespace onair\lib;
 class App
 {
     /**
+     * 글로벌 성공 코드
+     */
+    const CODE_GLOBAL_COMPLETE = 0x07;
+
+    /**
+     * 글로벌 실패 코드
+     */
+    const CODE_GLOBAL_FAILURE = 0x04;
+
+    /**
      * 설정 파일이 담기는 배열
      *
      * @var array

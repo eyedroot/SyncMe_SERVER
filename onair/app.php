@@ -88,6 +88,17 @@ if (! function_exists('handleFile')) {
 }
 
 /**
+ * TagHandler
+ * 
+ * 모든 파일을 컨트롤하고 업로드를 관리하는 클래스
+ */
+if (! function_exists('handleTag')) {
+    function handleTag() {
+        return \onair\lib\AppFacade::getTagHandler();
+    }
+}
+
+/**
  * handleHeader
  * 
  * $_SERVER 헤더에 담긴 키를 찾아 리턴한다
@@ -156,6 +167,15 @@ if (! function_exists('toObject')) {
 if (! function_exists('dd')) {
     function dd($data) {
         highlight_string("\n<?php\n\$data =\n" . var_export($data, true) . ";\n?>\n\n");
+    }
+}
+
+/**
+ * 유효한 세션이 있는지 확인한다
+ */
+if (! function_exists('sessionValid')) {
+    function sessionValid() : bool {
+        return !! app()->session('_id');
     }
 }
 

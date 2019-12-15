@@ -148,6 +148,23 @@ class AppFacade extends \onair\lib\abstracts\FacadeAbstract
     }
 
     /**
+     * TagHandler 리턴
+     *
+     * @return \onair\lib\TagSystem
+     */
+    static function getTagHandler() : \onair\lib\TagSystem {
+        $identifier = 'taghandler';
+
+        if (\array_key_exists($identifier, static::$facades)) {
+            return static::$facades[ $identifier ];
+        }
+
+        static::$facades[ $identifier ] = new \onair\lib\TagSystem();
+
+        return static::$facades[ $identifier ];
+    }
+
+    /**
      * static으로 선언한 핸들러를 파괴한다
      *
      * @return boolean
