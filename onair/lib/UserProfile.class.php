@@ -56,7 +56,7 @@ class UserProfile
      * @param array $pdata
      * @return void
      */
-    static function updateProfile(array $pdata) {
+    static function updateProfile(array $pdata) : bool {
         $db = handleDB('mongo');
         $bulk = new \MongoDB\Driver\BulkWrite();
 

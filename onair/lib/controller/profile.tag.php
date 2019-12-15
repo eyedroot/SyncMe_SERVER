@@ -20,11 +20,24 @@ return function ($body) {
         case 'add':
             $result = handleTag()::put($body->cond, $body->tag);
 
-            if ($result == handleTag()::CODE_ALREADY_TAG_EXISTS) {
-                endpoint( "이미 등록된 태그입니다.", handleTag()::CODE_ALREADY_TAG_EXISTS );
-            }
-            else if ($result == app()::CODE_GLOBAL_FAILURE) {
-                endpoint( "태그 등록이 완료되었습니다", app()::CODE_GLOBAL_COMPLETE );
+            // if ($result == handleTag()::CODE_ALREADY_TAG_EXISTS) {
+            //     endpoint( "이미 등록된 태그입니다.", handleTag()::CODE_ALREADY_TAG_EXISTS );
+            // }
+            // else if ($result == app()::CODE_GLOBAL_FAILURE) {
+            //     endpoint( "태그 등록이 완료되었습니다", app()::CODE_GLOBAL_COMPLETE );
+            // }
+
+            if ($result) {
+                $key = 'tag_' . $body->cond;
+
+                $tags = userProfile()::get(
+                    app()->session('_id'),
+                    [ 'projection' => [ $key => true, "_id" => false ] ]
+                );
+
+                endpoint( "TAG_ADDED", app()::CODE_GLOBAL_COMPLETE, (array) $tags );
+            } else {
+                endpoint( "TAG_FAILURE", app()::CODE_GLOBAL_FAILURE );
             }
         break;
         case 'delete':
