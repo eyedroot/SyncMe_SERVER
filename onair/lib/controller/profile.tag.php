@@ -12,10 +12,6 @@ return function ($body) {
         endpoint( "NO_SESSION", app()::CODE_GLOBAL_FAILURE );
     }
 
-    if ($body->method == 'add') {
-
-    }
-
     switch ($body->method) {
         case 'add':
             $result = handleTag()::put($body->cond, $body->tag);
