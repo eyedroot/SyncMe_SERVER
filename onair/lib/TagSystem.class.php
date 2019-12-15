@@ -36,8 +36,14 @@ class TagSystem
 
         if ($tagCode = static::getCondCode($cond)) {
             if (\property_exists($profile, $key)) {
+                if (! is_array($profile->{$key})) {
+                    $profile->{$key} = [];
+                }
+
                 if (! in_array($tag, $profile->{$key})) {
                     $merge = array_merge($profile->{$key}, [ $tag ]);
+                } else {
+                    $merge = $profile->{$key};
                 }
             } else {
                 // 아직 태그가 입력이 되지 않은 회원
