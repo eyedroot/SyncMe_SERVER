@@ -29,6 +29,8 @@
 			app()::POST('/onair/syncme/upload-photo', controller('profile.upload')),
 			// 프로필 업데이트
 			app()::POST('/onair/syncme/profile-update', controller('profile.update')),
+			// 프로파일 저장된 데이터 가져오기
+			app()::POST('/onair/syncme/profile-preloader', controller('profile.preloader')),
 			// 프로필 취미 음식 업데이트
 			app()::POST('/onair/syncme/profile-condition', controller('profile.condition'))
 		]

@@ -131,7 +131,8 @@ class FileHandler
                     "filetype"   => $this->extension,
                     "filesize"   => $this->files['size'],
                     "imagesize"  => $imageSize,
-                    "virtualdir" => static::$virtualDir
+                    "virtualdir" => static::$virtualDir,
+                    "timestamp"  => new \MongoDB\BSON\UTCDateTime()
                 ];
             }
         }
