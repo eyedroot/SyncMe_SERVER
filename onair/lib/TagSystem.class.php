@@ -9,7 +9,7 @@ class TagSystem
      */
     static $tagCode = [
         "hobby" => 0x01,
-        "food" => 0x02
+        "food"  => 0x02
     ];
 
     /**
@@ -54,6 +54,34 @@ class TagSystem
 
             return userProfile()::updateProfile(
                 [ $key => $merge ]
+            );
+        }
+
+        return false;
+    }
+
+    /**
+     * 태그를 삭제함
+     *
+     * @param string $cond
+     * @param string $tag
+     * @return boolean
+     */
+    static function delete(string $cond, string $tag) : bool {
+        $key = 'tag_' . $cond;
+
+        $profile = userProfile()::get(
+            app()->session('_id'),
+            [ "projection" => [$key => true] ]
+        );
+
+        $pos = array_search($tag, $profile->{$key});
+
+        if (array_key_exists($pos, $profile->{$key})) {
+            unset( $profile->{$key}[$pos] );
+
+            return userProfile()::updateProfile(
+                [ $key => $profile->{$key} ]
             );
         }
 

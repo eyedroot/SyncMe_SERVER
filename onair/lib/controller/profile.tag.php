@@ -37,6 +37,13 @@ return function ($body) {
             }
         break;
         case 'delete':
+            $result = handleTag()::delete($body->cond, $body->tag);
+
+            if ($result) {
+                endpoint( "TAG_REMOVE_COMPLETE", app()::CODE_GLOBAL_COMPLETE );
+            } else {
+                endpoint( "TAG_REMOVE_FAILURE", app()::CODE_GLOBAL_FAILURE );
+            }
         break;
         default:
             endpoint( "I_DONT_KNOW_THIS_CALL", app()::CODE_GLOBAL_FAILURE );
