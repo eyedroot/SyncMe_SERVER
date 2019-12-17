@@ -81,7 +81,7 @@ class TagSystem
             unset( $profile->{$key}[$pos] );
 
             return userProfile()::updateProfile(
-                [ $key => $profile->{$key} ]
+                [ $key => array_values($profile->{$key}) ]
             );
         }
 
