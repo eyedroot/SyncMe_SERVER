@@ -1,5 +1,7 @@
 # SyncMe_SERVER
 
+![MAIN01](./README/images/main_01.jpg)
+
 ## Collection Explanation
 
 ### user_profile 
