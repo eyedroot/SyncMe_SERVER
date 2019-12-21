@@ -17,7 +17,10 @@
 
 		// 로그인
 		// 보안상의 이유로 일반적인 로그인에서 connection-state로 명칭 변경
-		app()::POST('/onair/syncme/connection-state', controller('connection.state'))
+		app()::POST('/onair/syncme/connection-state', controller('connection.state')),
+
+		// 단말기 인증
+		app()::POST('/onair/syncme/device-verification', controller('device.verification'))
 	]);
 
 	app()::HTTP(

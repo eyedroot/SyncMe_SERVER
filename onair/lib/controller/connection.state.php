@@ -23,8 +23,8 @@ return function ($entityBody)
     // }
 
     if (! $entity->token) {
-        endpoint( "단말기 인증을 실패하였습니다. 
-        로그인 화면에서 단말기 인증을 진행해주세요.", user()::CODE_ERROR );
+        endpoint( "단말기 인증을 실패하였습니다. 로그인 화면에서 단말기 인증을 진행해주세요.", 
+            user()::CODE_ERROR );
     }
 
     if (! $entity->login_email) {
