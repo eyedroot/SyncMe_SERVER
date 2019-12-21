@@ -65,6 +65,16 @@ class User
     static function join(array $entity) {
         $db = handleDB('mongo');
 
+        if ( \array_key_exists('age', $entity) ) {
+            $age = intval($entity['age']);
+
+            if ($age >= 18 && $age <= 90) {
+                $entity['age'] = $age;
+            } else {
+                return false;
+            }
+        }
+
         if ( \array_key_exists('password', $entity) ) {
             $entity['password'] = safeEncrypt( $entity['password'] );
         }
@@ -140,7 +150,7 @@ class User
                 $_SESSION['oauth_token'] = $user->oauth_token;
                 $_SESSION['is_active']   = $user->is_active;
 
-                endpoint( "LOGIN_SUCCESS_WITH_TOKEN", user()::CODE_COMPLETE );
+                endpoint( "LOGIN_SUCCESS_WITH_TOKEN", user()::CODE_COMPLETE, [ "token" => $user->oauth_token ] );
             } else {
                 session_destroy();
                 endpoint( "LOGIN_FAILURE_WITH_TOKEN_AND_NOT_SAME_EMAIL_PASSWORD", user()::CODE_ERROR );

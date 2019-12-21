@@ -33,5 +33,7 @@ return function ($entityBody)
       user()::CODE_COMPLETE,
       [ "oauth_token" => $oAuthToken ]
     );
+  } else {
+    endpoint( "정상적인 수치가 입력되어 있어 회원가입이 불가능합니다", app()::CODE_GLOBAL_FAILURE );
   }
 };
