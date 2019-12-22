@@ -1,13 +1,18 @@
 <?php
 /**
+ * constant
+ */
+include_once 'constant.php';
+
+/**
  * autoload
  */
 include_once 'autoload.php';
 
 /**
- * constant
+ * Composer Autoload
  */
-include_once 'constant.php';
+include_once ROOT_PATH . 'vendor/autoload.php';
 
 /**
  * Session Environment

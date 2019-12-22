@@ -7,6 +7,8 @@
             "email": "byzz@kakao.com"
         }
     ],
-    "require": {},
+    "require": {
+        "gumlet/php-image-resize": "1.9.*"
+    },
     "license": "proprietary"
 }
