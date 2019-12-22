@@ -137,7 +137,7 @@ class FileHandler
                     "filename"   => $touchName,
                     "filetype"   => $this->extension,
                     "filesize"   => $this->files['size'],
-                    "thumbnail"  => $thumbnail,
+                    "thumbnail"  => $touchName . '.thumb',
                     "imagesize"  => $imageSize,
                     "virtualdir" => static::$virtualDir,
                     "timestamp"  => new \MongoDB\BSON\UTCDateTime()
