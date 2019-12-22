@@ -70,7 +70,7 @@ class FileHandler
             }
 
             if (\array_key_exists('name', $files)) {
-                $this->extension = strtolower(end(explode('.', $this->files['name'])));
+                $this->extension = strtolower(end(explode('.', $files['name'])));
             }
         }
     }
