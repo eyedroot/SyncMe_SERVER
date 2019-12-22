@@ -70,7 +70,8 @@ class FileHandler
             }
 
             if (\array_key_exists('name', $files['image'])) {
-                $this->extension = strtolower(end(explode('.', $files['image']['name'])));
+                $tmp = explode('.', $files['image']['name']);
+                $this->extension = strtolower( end($tmp) );
             }
         }
     }
