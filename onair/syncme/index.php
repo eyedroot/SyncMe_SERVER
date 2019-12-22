@@ -12,14 +12,8 @@
 		app()::GET('/onair/syncme/test', function () {
 			error_reporting(E_ALL);
 			ini_set("display_errors", 1);
-			phpinfo();
-			exit;
 
-			if (function_exists('imagecreatefromwebp')) {
-				echo 1;
-			} else {
-				echo 2;
-			}
+			print_r(app()::session('ONAIRSESS'));
 		}),
 
 		// 로그인
