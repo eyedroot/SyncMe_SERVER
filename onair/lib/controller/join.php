@@ -27,6 +27,7 @@ return function ($entityBody)
     endpoint( "인터넷 연결을 확인해주세요", user()::CODE_ERROR );
   }
 
+  // 후에는 oauth_token으로 로그인을 진행하게 된다
   if ($oAuthToken = user()::join( $clone )) {
     endpoint( 
       "회원가입이 완료되었습니다", 

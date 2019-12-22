@@ -27,11 +27,11 @@ return function ($entityBody)
     //         user()::CODE_ERROR );
     // }
 
-    if (! $entity->login_email || ! $entity->login_password) {
-        endpoint( "로그인을 진행할 수 없습니다 (1)", app()::CODE_GLOBAL_FAILURE );
-    } else {
-        // login
-        user()::login( $entity->token, $entity->login_email, $entity->login_password );
+    if (! $entity->token) {
+        if (! $entity->login_email || ! $entity->login_password) {
+            endpoint( "로그인을 진행할 수 없습니다 (1)", app()::CODE_GLOBAL_FAILURE );
+        }
     }
-    
+
+    user()::login( $entity->token, $entity->login_email, $entity->login_password );    
 };
