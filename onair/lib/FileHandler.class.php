@@ -69,8 +69,8 @@ class FileHandler
                 throw new \ErrorException("\$_FILES 변수에 `image` 키를 찾을 수 없습니다.");
             }
 
-            if (\array_key_exists('name', $files)) {
-                $this->extension = strtolower(end(explode('.', $files['name'])));
+            if (\array_key_exists('name', $files['image'])) {
+                $this->extension = strtolower(end(explode('.', $files['image']['name'])));
             }
         }
     }
