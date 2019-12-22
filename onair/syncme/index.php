@@ -10,8 +10,16 @@
 		// 회원가입
 		app()::POST('/onair/syncme/join', controller('join')),
 		app()::GET('/onair/syncme/test', function () {
-			$image = new \Gumlet\ImageResize();
-			print_r($image);
+			error_reporting(E_ALL);
+			ini_set("display_errors", 1);
+			phpinfo();
+			exit;
+
+			if (function_exists('imagecreatefromwebp')) {
+				echo 1;
+			} else {
+				echo 2;
+			}
 		}),
 
 		// 로그인

@@ -122,15 +122,21 @@ class FileHandler
 
         if ( $touchName = $touch($this->files['name']) ) {
             $fullPath = self::$directory . self::$virtualDir . '/' . $touchName . '.' . $this->extension;
+            $thumbnail = (self::$directory . self::$virtualDir . '/' . $touchName . '.thumb');
 
             if (! file_exists($fullPath)) {
                 move_uploaded_file($this->files['tmp_name'], $fullPath);
                 $imageSize = getimagesize($fullPath);
 
+                $resizeImage = new \Gumlet\ImageResize($fullPath);
+                $resizeImage->resize(150, 150, $allow_enlarge = true);
+                $resizeImage->save( ($thumbnail . '.' . $this->extension) );
+
                 return [
                     "filename"   => $touchName,
                     "filetype"   => $this->extension,
                     "filesize"   => $this->files['size'],
+                    "thumbnail"  => $thumbnail,
                     "imagesize"  => $imageSize,
                     "virtualdir" => static::$virtualDir,
                     "timestamp"  => new \MongoDB\BSON\UTCDateTime()
