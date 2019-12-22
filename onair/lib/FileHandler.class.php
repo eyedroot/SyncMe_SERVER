@@ -26,7 +26,8 @@ class FileHandler
     static $allowedExtension = [
         "jpeg",
         "jpg",
-        "png"
+        "png",
+        "webp"
     ];
 
     /**
