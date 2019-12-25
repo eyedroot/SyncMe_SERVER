@@ -43,11 +43,18 @@ class FileHandler
     static $virtualDir = "z00000000";
 
     /**
-     * $_FILES
+     * $_FILES['image']
      *
      * @var array
      */
     private $files = [];
+
+    /**
+     * $_FILES['thumbnail']
+     *
+     * @var array
+     */
+    private $thumbnail = [];
 
     /**
      * 파일 확장자
@@ -65,10 +72,16 @@ class FileHandler
         if (count($files) > 0) {
             if (\array_key_exists('image', $files)) {
                 $this->files = $files['image'];
+
+                if (\array_key_exists('thumbnail', $files)) {
+                    $this->thumbnail = $files['thumbnail'];
+                }
             } else {
                 throw new \ErrorException("\$_FILES 변수에 `image` 키를 찾을 수 없습니다.");
             }
 
+            // 썸네일의 확장자를 따로 지정하지 않는 이유는
+            // 이미지의 확장자와 동일한 것으로 약속한다
             if (\array_key_exists('name', $files['image'])) {
                 $tmp = explode('.', $files['image']['name']);
                 $this->extension = strtolower( end($tmp) );
@@ -123,21 +136,18 @@ class FileHandler
 
         if ( $touchName = $touch($this->files['name']) ) {
             $fullPath = self::$directory . self::$virtualDir . '/' . $touchName . '.' . $this->extension;
-            $thumbnail = (self::$directory . self::$virtualDir . '/' . $touchName . '.thumb');
+            $thumbPath = self::$directory . self::$virtualDir . '/' . $touchName . '$thumb$.' . $this->extension;
 
             if (! file_exists($fullPath)) {
                 move_uploaded_file($this->files['tmp_name'], $fullPath);
-                $imageSize = getimagesize($fullPath);
-
-                $resizeImage = new \Gumlet\ImageResize($fullPath);
-                $resizeImage->resize(150, 150, $allow_enlarge = true);
-                $resizeImage->save( ($thumbnail . '.' . $this->extension) );
+                move_uploaded_file($this->thumbnail['tmp_name'], $thumbPath);
+                $imageSize = getimagesize($fullPath);                
 
                 return [
                     "filename"   => $touchName,
                     "filetype"   => $this->extension,
                     "filesize"   => $this->files['size'],
-                    "thumbnail"  => $touchName . '.thumb',
+                    "thumbnail"  => $touchName . '$thumb$',
                     "imagesize"  => $imageSize,
                     "virtualdir" => static::$virtualDir,
                     "timestamp"  => new \MongoDB\BSON\UTCDateTime()
