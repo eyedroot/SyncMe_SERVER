@@ -124,7 +124,7 @@ class User
             if ( app()::session('email') &&
                     app()::session('is_active') == user()::STATUS_ACTIVE ) {
                 
-                endpoint( "LOGIN_SUCCESS", user()::CODE_COMPLETE );
+                endpoint( "LOGIN_SUCCESS", user()::CODE_COMPLETE, [ "_id" => app()::session("_id") ] );
             }
         } else {
             // 쿠키가 없으면
@@ -150,7 +150,7 @@ class User
                 $_SESSION['oauth_token'] = $user->oauth_token;
                 $_SESSION['is_active']   = $user->is_active;
 
-                endpoint( "LOGIN_SUCCESS_WITH_TOKEN", user()::CODE_COMPLETE, [ "token" => $user->oauth_token ] );
+                endpoint( "LOGIN_SUCCESS_WITH_TOKEN", user()::CODE_COMPLETE, [ "token" => $user->oauth_token, "_id" => $user->_id ] );
             } else {
                 session_destroy();
                 endpoint( "LOGIN_FAILURE_WITH_TOKEN_AND_NOT_SAME_EMAIL_PASSWORD", user()::CODE_ERROR );
