@@ -10,6 +10,11 @@ class UserProfile
     static $_db_collection = 'syncme.user_profile';
 
     /**
+     * 사진을 올릴 수 있는 최대 갯수를 지정함
+     */
+    const MAX_PHOTO_COUNT = 4;
+
+    /**
      * 회원정보 업데이트
      *
      * @param array $udata
@@ -95,6 +100,16 @@ class UserProfile
 
         if ($rows) {
             $rows = $rows[0];
+
+            if (\property_exists($rows, 'photo')) {
+                if (is_array($rows->photo) && count($rows->photo) > self::MAX_PHOTO_COUNT) {
+                    $tmp = array_reverse($rows->photo);
+                    $rows->photo = array_reverse(
+                        array_splice($tmp, 0, self::MAX_PHOTO_COUNT)
+                    );
+                }
+
+            }
         }
 
         return $rows;

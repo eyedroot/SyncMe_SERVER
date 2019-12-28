@@ -27,6 +27,9 @@ if (! defined('SESSION_NAME')) {
     define('SESSION_NAME', 'ONAIRSESS');
 }
 
+/**
+ * Session Path
+ */
 if (! defined('SESSION_PATH')) {
     define('SESSION_PATH', '/var/www/SyncMe_SESSION');
 }
