@@ -104,9 +104,7 @@ class UserProfile
             if (\property_exists($rows, 'photo')) {
                 if (is_array($rows->photo) && count($rows->photo) > self::MAX_PHOTO_COUNT) {
                     $tmp = array_reverse($rows->photo);
-                    $rows->photo = array_reverse(
-                        array_splice($tmp, 0, self::MAX_PHOTO_COUNT)
-                    );
+                    $rows->photo = array_splice($tmp, 0, self::MAX_PHOTO_COUNT);
                 }
 
             }
