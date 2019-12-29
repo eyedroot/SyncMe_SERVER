@@ -10,12 +10,9 @@
 		// 회원가입
 		app()::POST('/onair/syncme/join', controller('join')),
 		app()::GET('/onair/syncme/test', function () {
-			error_reporting(E_ALL);
-			ini_set("display_errors", 1);
-
-			phpinfo();
-
-			print_r(app()::session('ONAIRSESS'));
+			(controller('profile.preloader'))(
+				"{ \"load_user_id\": \"5dff4272ec709b22024d0b72\" }"
+			);
 		}),
 
 		// 로그인

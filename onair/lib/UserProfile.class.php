@@ -12,7 +12,7 @@ class UserProfile
     /**
      * 사진을 올릴 수 있는 최대 갯수를 지정함
      */
-    const MAX_PHOTO_COUNT = 4;
+    const MAX_PHOTO_COUNT = 7;
 
     /**
      * 회원정보 업데이트
@@ -39,6 +39,10 @@ class UserProfile
         } else {
             $photoUpdator[] = $udata;
         }
+
+        usort($photoUpdator, function ($a, $b) {
+            return $a->timestamp <=> $b->timestamp;
+        });
         
         $bulk->update(
             [ "user_id" => new \MongoDB\BSON\ObjectId( app()->session('_id') ) ],
@@ -104,7 +108,9 @@ class UserProfile
             if (\property_exists($rows, 'photo')) {
                 if (is_array($rows->photo) && count($rows->photo) > self::MAX_PHOTO_COUNT) {
                     $tmp = array_reverse($rows->photo);
-                    $rows->photo = array_splice($tmp, 0, self::MAX_PHOTO_COUNT);
+                    $rows->photo = array_reverse(
+                        array_splice($tmp, 0, self::MAX_PHOTO_COUNT)
+                    );
                 }
 
             }
