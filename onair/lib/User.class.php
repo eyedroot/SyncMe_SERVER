@@ -75,8 +75,16 @@ class User
             }
         }
 
-        if ( \array_key_exists('password', $entity) ) {
+        if (\array_key_exists('password', $entity)) {
             $entity['password'] = safeEncrypt( $entity['password'] );
+        }
+
+        if (\array_key_exists('like', $entity)) {
+            $entity['like'] = 0;
+        }
+
+        if (\array_key_exists('dislike', $entity)) {
+            $entity['dislike'] = 0;
         }
 
         // UTC TimeZone 저장 (#4)
