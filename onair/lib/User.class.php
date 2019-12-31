@@ -79,11 +79,11 @@ class User
             $entity['password'] = safeEncrypt( $entity['password'] );
         }
 
-        if (\array_key_exists('like', $entity)) {
+        if (! \array_key_exists('like', $entity)) {
             $entity['like'] = 0;
         }
 
-        if (\array_key_exists('dislike', $entity)) {
+        if (! \array_key_exists('dislike', $entity)) {
             $entity['dislike'] = 0;
         }
 
