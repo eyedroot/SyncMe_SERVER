@@ -69,6 +69,9 @@ class UserProfile
         $db = handleDB('mongo');
         $bulk = new \MongoDB\Driver\BulkWrite();
 
+        print_r($_SESSION);
+        exit;
+
         $merged = array_merge(
             [ 
                 "user_id"          => new \MongoDB\BSON\ObjectId( app()->session('_id') ),
