@@ -15,6 +15,11 @@
 			);
 		}),
 
+		// phpinfo
+		app()::GET('/onair/syncme/phpinfo', function () {
+			phpinfo();
+		}),
+
 		// 로그인
 		// 보안상의 이유로 일반적인 로그인에서 connection-state로 명칭 변경
 		app()::POST('/onair/syncme/connection-state', controller('connection.state')),
