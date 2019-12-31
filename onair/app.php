@@ -20,7 +20,7 @@ include_once ROOT_PATH . 'vendor/autoload.php';
 ini_set('session.cookie_lifetime', 60 * 60 * 24 * 100);
 ini_set('session.gc_maxlifetime', 60 * 60 * 24 * 100);
 // ini_set('session.save_path', SESSION_PATH);
-session_name( SESSION_NAME );
+// session_name( SESSION_NAME );
 session_start();
 
 /**
