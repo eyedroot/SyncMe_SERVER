@@ -126,7 +126,7 @@ class User
         // app.php에서 바로 session_start();
         // 코드가 실행되기 때문에 Guest도 세션이 생성 될 수 있다
         // 그래서 체크해줘야 한다
-        if ( app()::cookie( SESSION_NAME ) && app()::session('email') && app()::session('gcpid') ) {
+        if ( app()::session('email') && app()::session('gcpid') ) {
             // 쿠키가 있으면 
             // 세션이 유효한지 체크한다
             if ( app()::session('email') &&
