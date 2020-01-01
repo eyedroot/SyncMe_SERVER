@@ -116,6 +116,7 @@ class User
      */
     static function login(string $token = '', string $email = '', string $password = '') : void {
         $user = [];
+        $logic = 0;
 
         $token = str_replace(
             '\/',
@@ -129,20 +130,23 @@ class User
         if ( app()::session('email') && app()::session('gcpid') ) {
             // 쿠키가 있으면 
             // 세션이 유효한지 체크한다
-            if ( app()::session('email') &&
-                    app()::session('is_active') == user()::STATUS_ACTIVE ) {
+            if ( app()::session('email') == $email &&
+                 app()::session('oauth_token') == $token &&
+                 app()::session('is_active') == user()::STATUS_ACTIVE ) {
                 
-                endpoint( "LOGIN_SUCCESS", user()::CODE_COMPLETE, [ "_id" => app()::session("_id") ] );
+                endpoint( "LOGIN_SUCCESS", user()::CODE_COMPLETE, [ "_id" => app()::session("_id") ], [ 'logic' => $logic ] );
             }
         } else {
             // 쿠키가 없으면
             // 세션을 새로 생성한다
             if ($token) {
                 $user = user()::get( 'token', [$token] );
+                $logic = 0x02;
             } else {
                 $user = user()::get( 'login', 
                     ['email' => $email,  'password' => $password] 
                 );
+                $logic = 0x03;
             }
 
             // print_r($user);
@@ -158,10 +162,10 @@ class User
                 $_SESSION['oauth_token'] = $user->oauth_token;
                 $_SESSION['is_active']   = $user->is_active;
 
-                endpoint( "LOGIN_SUCCESS_WITH_TOKEN", user()::CODE_COMPLETE, [ "token" => $user->oauth_token, "_id" => $user->_id ] );
+                endpoint( "LOGIN_SUCCESS_WITH_TOKEN", user()::CODE_COMPLETE, [ "token" => $user->oauth_token, "_id" => $user->_id, "logic" => $logic ] );
             } else {
                 session_destroy();
-                endpoint( "LOGIN_FAILURE_WITH_TOKEN_AND_NOT_SAME_EMAIL_PASSWORD", user()::CODE_ERROR );
+                endpoint( "LOGIN_FAILURE_WITH_TOKEN_AND_NOT_SAME_EMAIL_PASSWORD", user()::CODE_ERROR, [ "logic" => 0x09 ] );
             }
         }
 
