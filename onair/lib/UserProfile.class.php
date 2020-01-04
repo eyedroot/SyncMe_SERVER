@@ -104,6 +104,8 @@ class UserProfile
 
         if ($rows) {
             $rows = $rows[0];
+            $rows->_id = (string) $rows->_id;
+            $rows->user_id = (string) $rows->user_id;
 
             if (\property_exists($rows, 'photo')) {
                 if (is_array($rows->photo) && count($rows->photo) > self::MAX_PHOTO_COUNT) {

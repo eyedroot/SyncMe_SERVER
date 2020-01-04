@@ -149,8 +149,6 @@ class User
                 $logic = 0x03;
             }
 
-            // print_r($user);
-
             if ( count($user) == 1 ) {
                 $user = $user[0];
 
@@ -162,7 +160,11 @@ class User
                 $_SESSION['oauth_token'] = $user->oauth_token;
                 $_SESSION['is_active']   = $user->is_active;
 
-                endpoint( "LOGIN_SUCCESS_WITH_TOKEN", user()::CODE_COMPLETE, [ "token" => $user->oauth_token, "_id" => $user->_id, "logic" => $logic ] );
+                endpoint("LOGIN_SUCCESS_WITH_TOKEN", user()::CODE_COMPLETE, [ 
+                    "token" => $user->oauth_token,
+                    "_id"   => (string) $user->_id,
+                    "logic" => $logic
+                ]);
             } else {
                 session_destroy();
                 endpoint( "LOGIN_FAILURE_WITH_TOKEN_AND_NOT_SAME_EMAIL_PASSWORD", user()::CODE_ERROR, [ "logic" => 0x09 ] );
@@ -170,6 +172,25 @@ class User
         }
 
         endpoint( "I_DONT_KNOW_CODE", user()::CODE_ERROR );
+    }
+
+    /**
+     * 로그아웃 처리 (세션제거)
+     *
+     * @param string $token
+     * @return boolean
+     */
+    public static function logout(string $token) : bool {
+        if (app()::session('oauth_token') == $token) {
+            $_SESSION = null;
+            $_SESSION = [];
+
+            \session_destroy();
+
+            return true;
+        }
+
+        return false;
     }
 
     /**
