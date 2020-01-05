@@ -35,7 +35,7 @@ class TagSystem
         $merge = [];
 
         if ($tagCode = static::getCondCode($cond)) {
-            if (\property_exists($profile, $key)) {
+            if (is_object($profile) && \property_exists($profile, $key)) {
                 if (! is_array($profile->{$key})) {
                     $profile->{$key} = [];
                 }
