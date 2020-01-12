@@ -13,5 +13,5 @@ return function ($entityBody)
         endpoint( "로그인을 진행할 수 없습니다 (1)", app()::CODE_GLOBAL_FAILURE );
     }
 
-    user()::login($entity->login_email, $entity->login_password );
+    user()::login($entity->login_email, $entity->login_password);
 };
