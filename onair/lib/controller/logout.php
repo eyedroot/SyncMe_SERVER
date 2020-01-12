@@ -5,7 +5,7 @@
 return function ($body) {
     $body = toObject(json_decode($body));
 
-    if (User()::logout($body->token)) {
+    if (User()::logout()) {
         \endpoint( "로그아웃 되었습니다.", app()::CODE_GLOBAL_COMPLETE );
     }
 
