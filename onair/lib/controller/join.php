@@ -31,6 +31,6 @@ return function ($entityBody)
   if ($oAuthToken = user()::join( $clone )) {
     user()::login($entity->email, $entity->password);
   } else {
-    endpoint("정상적인 수치가 입력되어 있지않아 회원가입이 불가능합니다", app()::CODE_GLOBAL_FAILURE);
+    endpoint("비정상적인 접근입니다.", app()::CODE_GLOBAL_FAILURE);
   }
 };
