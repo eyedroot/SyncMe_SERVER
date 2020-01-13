@@ -7,14 +7,13 @@ include_once 'app.php';
  */
 return function ($body) {
     $params = \toObject( json_decode($body, JSON_FORCE_OBJECT) );
-    $target_id = property_exists($params, 'load_user_id') ? $params->load_user_id : app()->session('_id');
+    $targetId = property_exists($params, 'loadUserId') && $params->loadUserId
+                    ? $params->loadUserId : app()->session('_id');
 
-    if ($target_id) {
-        $preloads = userProfile()::get(
-            $target_id
-        );
+    if ($targetId) {
+        $preloads = userProfile()::get($targetId);
     
-        endpoint( "PRELOADER", user()::CODE_COMPLETE, (array) $preloads );
+        endpoint("PRELOADER", user()::CODE_COMPLETE, (array) $preloads);
     } else {
         endpoint("NOT_LOGGED_IN", app()::CODE_GLOBAL_FAILURE);
     }

@@ -9,9 +9,9 @@ return function ($entityBody)
 {
     $entity = \toObject( json_decode($entityBody, JSON_FORCE_OBJECT) );
 
-    if (! $entity->login_email || ! $entity->login_password) {
+    if (! $entity->loginEmail || ! $entity->loginPassword) {
         endpoint( "로그인을 진행할 수 없습니다 (1)", app()::CODE_GLOBAL_FAILURE );
     }
 
-    user()::login($entity->login_email, $entity->login_password);
+    user()::login($entity->loginEmail, $entity->loginPassword);
 };

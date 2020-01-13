@@ -137,10 +137,7 @@ class User
                 $_SESSION['oauth_token'] = $user->oauth_token;
                 $_SESSION['is_active']   = $user->is_active;
 
-                endpoint("LOGIN_SUCCESS", user()::CODE_COMPLETE, [ 
-                    "token" => $user->oauth_token,
-                    "_id"   => (string) $user->_id
-                ]);
+                endpoint("LOGIN_SUCCESS", user()::CODE_COMPLETE, ["_id" => (string) $user->_id]);
             } else {
                 session_destroy();
 

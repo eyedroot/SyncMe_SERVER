@@ -9,6 +9,8 @@
 	app()::HTTP([], [
 		// 회원가입
 		app()::POST('/onair/syncme/join', controller('join')),
+		// 로그인
+		app()::POST('/onair/syncme/login', controller('login')),
 		app()::GET('/onair/syncme/test', function () {
 			var_dump(ini_get("session.save_handler"));
 			var_dump(ini_get("session.save_path"));
@@ -19,8 +21,7 @@
 			phpinfo();
 		}),
 
-		// 로그인
-		// 보안상의 이유로 일반적인 로그인에서 connection-state로 명칭 변경
+		// 간단 ㄹ상태 확인
 		app()::POST('/onair/syncme/connection-state', controller('connection.state')),
 
 		// 단말기 인증
