@@ -87,6 +87,33 @@ class UserProfile
     }
 
     /**
+     * 해당 유저의 
+     * 
+     * @param string $id
+     * @param integer $point
+     * @return boolean
+     */
+    static function likeOrDislike(string $id, int $point) : bool {
+        $db    = handleDB('mongo');
+        $bulk  = new \MongoDB\Driver\BulkWrite();
+        $key   = null;
+        $point = ($point > 0) ? 1 : -1;
+
+        if ($point > 0) {
+            $key = 'like';
+        } else {
+            $key = 'dislike';
+        }
+
+        $bulk->update(
+            [ "user_id" => new \MongoDB\BSON\ObjectId($id) ],
+            [ '$inc' => [ $key =>  $point] ]
+        );
+
+        return !! $db->executeBulkWrite(self::$_db_collection, $bulk);
+    }
+
+    /**
      * 몽고디비 _id로 해당 유저의 프로필 데이터를 가져옴
      *
      * @param string $_id

@@ -15,6 +15,6 @@ return function ($body) {
     
         endpoint("PRELOADER", user()::CODE_COMPLETE, (array) $preloads);
     } else {
-        endpoint("NOT_LOGGED_IN", app()::CODE_GLOBAL_FAILURE);
+        endpoint("PRELOADER_LOAD_FAILURE", app()::CODE_GLOBAL_FAILURE);
     }
 };

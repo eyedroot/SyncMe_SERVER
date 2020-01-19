@@ -35,6 +35,8 @@
 		[
 			// 프로파일 이미지 업로드 
 			app()::POST('/onair/syncme/upload-photo', controller('profile.upload')),
+			// 프로파일 좋아요/싫어요
+			app()::POST('/onair/syncme/profile-like-or-dislike', controller('profile.like.dislike')),
 			// 프로필 업데이트
 			app()::POST('/onair/syncme/profile-update', controller('profile.update')),
 			// 프로파일 저장된 데이터 가져오기
