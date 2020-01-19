@@ -21,6 +21,20 @@
 			phpinfo();
 		}),
 
+		app()::GET('/onair/syncme/test2', function () {
+			$d = handleDB('mongo');
+
+			$bulk = new \MongoDB\Driver\BulkWrite();
+			$bulk->update(
+				[ 'tag' => "테스트" ], 
+				[ '$inc' => [ 'count' => 1 ] ],
+				[ 'upsert' => true ]
+			);
+
+			$r = $d->executeBulkWrite('syncme.tag_system', $bulk);
+			dd($r->getUpsertedIds());
+		}),
+
 		// 간단 ㄹ상태 확인
 		app()::POST('/onair/syncme/connection-state', controller('connection.state')),
 

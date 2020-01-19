@@ -5,8 +5,7 @@ include_once 'app.php';
 /**
  * 회원가입 라우터
  */
-return function ($entityBody) 
-{
+return function ($entityBody) {
   $tag = handleRequest('tag')->disposal('int')->get();
 
   try {

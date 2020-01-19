@@ -147,7 +147,19 @@ class UserProfile
                         array_splice($tmp, 0, self::MAX_PHOTO_COUNT)
                     );
                 }
+            }
 
+            foreach (['tag_hobby', 'tag_food'] as $tagSelector) {
+                if (\property_exists($rows, $tagSelector)) {
+                    $toString = function (object $v) {
+                        return [
+                            'tag_id' => (string) $v->tag_id,
+                            'origin_tag' => $v->origin_tag
+                        ];
+                    };
+    
+                    $rows->{$tagSelector} = array_map($toString, $rows->{$tagSelector});
+                }
             }
         }
 
