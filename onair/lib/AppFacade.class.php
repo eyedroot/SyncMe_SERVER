@@ -39,16 +39,28 @@ class AppFacade extends \onair\lib\abstracts\FacadeAbstract
 
                 if ( \isProd() ) {
                     $auth = (
-                        app()->var('mongodb_id') . ':' . \safeDecrypt( app()->var('mongodb_password') ) . 
-                        '@'
+                        app()->var('mongodb_id') . ':' . \safeDecrypt( app()->var('mongodb_password') ) . '@'
                     );
                 }
 
-                $host = "mongodb://" . $auth . app()->var('mongodb_host') . ':' . 
-                        app()->var('mongodb_port') . '/' . app()->var('mongodb_dbname');
+                $host = "mongodb://" . $auth . app()->var('mongodb_host') . ':' . app()->var('mongodb_port') . '/' . app()->var('mongodb_dbname');
 
                 static::$facades[ $identifier ] = new \MongoDB\Driver\Manager( $host );
                 break;
+            case 'redis':
+                $redis = new \Redis();
+
+                try {
+                    $redis->connect(app()->var('redis_host'), app()->var('redis_port'), app()->var('redis_timeout'));
+                } catch (\Exception $e) {
+                    if (\isProd()) {
+                        \endpoint("can't connect redis server!!", App()::CODE_GLOBAL_FAILURE);
+                    } else {
+                        exit($e->getMessage());
+                    }
+                }
+
+                static::$facades[ $identifier ] = $redis;
             default:
         }
         
