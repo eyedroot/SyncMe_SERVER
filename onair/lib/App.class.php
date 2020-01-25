@@ -18,6 +18,11 @@ class App
     const CODE_GLOBAL_FAILURE = 0x04;
 
     /**
+     * 현재의 Datetime
+     */
+    var $currentDatetime;
+
+    /**
      * 설정 파일이 담기는 배열
      *
      * @var array
@@ -48,10 +53,8 @@ class App
 
     /**
      * App 클래스의 생성자
-     *
-     * @param string $key
      */
-    function __construct(string $key) {
+    function __construct() {
         // 루트 홈 디렉토리의 상위 디렉토리안 app.cfg.php 파일을 생성해준다
         // 환경변수를 다루기 위함이며, 노출되서는 안되는 값들을 넣어서 사용할 수 있다
         // 예를 들어 구글API의 키 값이라던지 ..
@@ -67,10 +70,13 @@ class App
         static::$requestUri = rtrim($_SERVER['REQUEST_URI'], '\/') . '/';
 
         // 쿠키값 복사하여 사용
-        static::$cookie = $_COOKIE;
+        static::$cookie = & $_COOKIE;
 
         // 세션값 복사하여 사용
-        static::$session = $_SESSION;
+        static::$session = & $_SESSION;
+
+        // 현재의 시간 할당
+        $this->currentDatetime = date('Y-m-d H:i:s');
     }
 
     /**
@@ -270,11 +276,17 @@ class App
      * 현재 세션의 해당하는 key를 돌려줌
      *
      * @param string $key
+     * @param string $value
      * @return string
      */
-    static function session(string $key = '') : string {
+    static function session(string $key = '', string $value = '') : string {
         if ( \array_key_exists($key, static::$session) ) {
             return self::$session[ $key ];
+        } else {
+            if ($value) {
+                self::$session[$key] = $value;
+                return self::$session[ $key ];
+            }
         }
 
         return '';

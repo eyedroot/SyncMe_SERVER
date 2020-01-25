@@ -177,6 +177,23 @@ class AppFacade extends \onair\lib\abstracts\FacadeAbstract
     }
 
     /**
+     * TagMatchSystem Handler
+     *
+     * @return \onair\lib\TagMatchSystem
+     */
+    static function getTagMatchHandler() : \onair\lib\TagMatchSystem {
+        $identifier = 'tagmatchsystemhandler';
+
+        if (\array_key_exists($identifier, static::$facades)) {
+            return static::$facades[ $identifier ];
+        }
+
+        static::$facades[ $identifier ] = new \onair\lib\TagMatchSystem();
+
+        return static::$facades[ $identifier ];
+    }
+
+    /**
      * static으로 선언한 핸들러를 파괴한다
      *
      * @return boolean

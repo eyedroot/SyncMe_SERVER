@@ -12,7 +12,12 @@ class TagSystem
     /**
      * 태그가 저정되는 콜렉션
      */
-    static $_db_collection = 'syncme.tag_system';
+    static $_db_collection = 'syncme.tag';
+
+    /**
+     * 태그의 키들
+     */
+    static $tagKeys = ['tag_hobby', 'tag_food'];
 
     /**
      * 공백을 제거한 태그의 유니크 아이디를 생성하여 돌려줌
@@ -132,5 +137,14 @@ class TagSystem
         );
 
         return false;
+    }
+
+    /**
+     * 태그의 키들 리턴
+     *
+     * @return array
+     */
+    function keys() : array {
+        return self::$tagKeys;
     }
 }

@@ -14,6 +14,7 @@
 		app()::GET('/onair/syncme/test', function () {
 			var_dump(ini_get("session.save_handler"));
 			var_dump(ini_get("session.save_path"));
+			dd(handleDB('mongo'));
 		}),
 
 		// phpinfo
@@ -35,7 +36,8 @@
 			dd($r->getUpsertedIds());
 		}),
 
-		// 간단 ㄹ상태 확인
+		// 상태 확인 및 사용자의 마지막 업데이트 날짜가 1시간 이후라면
+		// 해당 사람의 태그 매칭 시스템을 업데이트 함
 		app()::POST('/onair/syncme/connection-state', controller('connection.state')),
 
 		// 단말기 인증

@@ -60,6 +60,15 @@ if (! function_exists('userProfile')) {
 }
 
 /**
+ * getTagMatchHandler 클래스
+ */
+if (! function_exists('handleTagMatch')) {
+    function handleTagMatch() {
+        return \onair\lib\AppFacade::getTagMatchHandler();
+    }
+}
+
+/**
  * handleDB
  * 
  * 모든 DB 인스턴트는 해당 메서드를 통해 처리한다
