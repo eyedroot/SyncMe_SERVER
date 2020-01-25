@@ -19,21 +19,36 @@ class TagMatchSystem
      *
      * @return boolean
      */
-    function updateStatus() : bool {
+    function updateMatchTable() : bool {
         $db      = \handleDB('mongo');
         $bulk    = new \MongoDB\Driver\BulkWrite();
+
         $profile = \userProfile()->get();
         $tagIds  = [];
 
+        // 분리되어 있는 태그 필드들을 1개의 배열에 모으기
         foreach (handleTag()->keys() as $tagSelector) {
             if (\property_exists($profile, $tagSelector)) {
                 foreach ($profile->{$tagSelector} as $row) {
-                    $tagId = new \MongoDB\BSON\ObjectId($row['tag_id']);
-                    $tagIds[] = $tagId;
+                    $tagIds[] = $row['_objectId_'];
                 }
             }
         }
 
-        return true;
+        $updateData = [
+            'user_id'          => new \MongoDB\BSON\ObjectId( app()->session('_id') ),
+            'tag'              => $tagIds,
+            'like'             => $profile->like,
+            'dislike'          => $profile->dislike,
+            'update_timestamp' => new \MongoDB\BSON\UTCDateTime()
+        ];
+
+        $bulk->update(
+            [ 'user_id' => new \MongoDB\BSON\ObjectId( app()->session('_id') ) ],
+            [ '$set' => $updateData ],
+            [ 'upsert' => true ]
+        );
+
+        return !! $db->executeBulkWrite(self::$_db_collection, $bulk);
     }
 }

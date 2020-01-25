@@ -243,4 +243,23 @@ class User
         return $rows;
     } 
 
+    /**
+     * 마지막 위치로 유저의 정보를 업데이트 한다
+     *
+     * @param double $latitude
+     * @param double $longtitude
+     * @return boolean
+     */
+    function updateLastLocation(float $latitude, float $longtitude) : bool {
+        $db = handleDB('mongo');
+        $bulk = new \MongoDB\Driver\BulkWrite();
+
+        $bulk->update(
+            [ '_id' => new \MongoDB\BSON\ObjectId( app()->session('_id') ) ],
+            [ '$set' => [ 'location' => [$latitude, $longtitude] ] ]
+        );
+
+        return !! $db->executeBulkWrite(self::$_db_collection, $bulk);
+    }
+
 }

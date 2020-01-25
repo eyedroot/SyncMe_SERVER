@@ -120,7 +120,7 @@ class UserProfile
      * @param array $options
      * @return array
      */
-    static function get(string $_id = '', array $options = []) {
+    static function get(string $_id = '', array $options = []) : array {
         if (! $_id) {
             $_id = app()::session('_id');
         }
@@ -156,10 +156,14 @@ class UserProfile
 
             foreach (handleTag()->keys() as $tagSelector) {
                 if (\property_exists($rows, $tagSelector)) {
+                    /**
+                     * toString for \MongoDB\BSON\ObjectId()
+                     */
                     $toString = function (object $v) {
                         return [
-                            'tag_id' => (string) $v->tag_id,
-                            'origin_tag' => $v->origin_tag
+                            'tag_id'     => (string) $v->tag_id,
+                            'origin_tag' => $v->origin_tag,
+                            '_objectId_' => $v->tag_id
                         ];
                     };
     
