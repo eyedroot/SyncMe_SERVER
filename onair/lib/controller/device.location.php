@@ -13,7 +13,7 @@ return function ($body) {
     // user 콜렉션의 location 필드를 업데이트 시킨다
     if (user()->updateLastLocation($latitude, $longtitude)) {
         if (handleTagMatch()->updateMatchTable()) {
-            endpoint("위치 업데이트가 완료되었습니다.", app()::CODE_GLOBAL_COMPLETE);
+            endpoint("위치 및 매칭 테이블 업데이트가 완료되었습니다.", app()::CODE_GLOBAL_COMPLETE);
         }
     }
 

@@ -118,9 +118,9 @@ class UserProfile
      *
      * @param string $_id
      * @param array $options
-     * @return array
+     * @return object
      */
-    static function get(string $_id = '', array $options = []) : array {
+    static function get(string $_id = '', array $options = []) : object {
         if (! $_id) {
             $_id = app()::session('_id');
         }
@@ -163,7 +163,7 @@ class UserProfile
                         return [
                             'tag_id'     => (string) $v->tag_id,
                             'origin_tag' => $v->origin_tag,
-                            '_objectId_' => $v->tag_id
+                            '$objectId' => $v->tag_id
                         ];
                     };
     

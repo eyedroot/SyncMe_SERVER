@@ -30,7 +30,11 @@ class TagMatchSystem
         foreach (handleTag()->keys() as $tagSelector) {
             if (\property_exists($profile, $tagSelector)) {
                 foreach ($profile->{$tagSelector} as $row) {
-                    $tagIds[] = $row['_objectId_'];
+                    if (! ($row['$objectId'] instanceof \MongoDB\BSON\ObjectId)) {
+                        $row['$objectId'] = new \MongoDB\BSON\ObjectId($row['$objectId']);
+                    }
+
+                    $tagIds[] = $row['$objectId'];
                 }
             }
         }
