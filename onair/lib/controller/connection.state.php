@@ -23,7 +23,13 @@ return function ($entityBody)
          * 로그인이 되어 있는 세션에 메인화면에서 현재는 무조건 InputActivity로 가지만
          * 필수 회원정보가 입력되어 있다면 FragmentMatch로 이동시켜주게 한다
          */
-        endpoint("CONNECTION_STATE_OKAY", app()::CODE_GLOBAL_COMPLETE);
+        $openActivity = 'activity.container';
+
+        if (! app()::session('profile_age') || ! app()::session('profile_nickname')) {
+            $openActivity = 'activity.input';
+        }
+
+        endpoint("CONNECTION_STATE_OKAY", app()::CODE_GLOBAL_COMPLETE, [ 'openActivity' => $openActivity ]);
     } else {
         /**
          * 유효한 세션이 존재하지 않음

@@ -17,9 +17,11 @@ class TagMatchSystem
     /**
      * 현재 로그인된 사람의 위치를 업데이트 시킴
      *
+     * @param float $latitude
+     * @param float $longtitude
      * @return boolean
      */
-    function updateMatchTable() : bool {
+    function updateMatchTable(float $latitude, float $longtitude) : bool {
         $db      = \handleDB('mongo');
         $bulk    = new \MongoDB\Driver\BulkWrite();
 
@@ -44,6 +46,7 @@ class TagMatchSystem
             'tag'              => $tagIds,
             'like'             => $profile->like,
             'dislike'          => $profile->dislike,
+            'location'         => [$latitude, $longtitude],
             'update_timestamp' => new \MongoDB\BSON\UTCDateTime()
         ];
 

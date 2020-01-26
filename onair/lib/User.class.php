@@ -136,6 +136,11 @@ class User
                 $_SESSION['timestamp']   = $user->timestamp;
                 $_SESSION['oauth_token'] = $user->oauth_token;
                 $_SESSION['is_active']   = $user->is_active;
+
+                $profile = \userProfile()::get();
+                $_SESSION['profile_age'] = $profile->age ?: null;
+                $_SESSION['profile_nickname'] = $profile->nickname ?: null;
+
                 $_SESSION['last_login']  = app()->currentDatetime;
 
                 endpoint("LOGIN_SUCCESS", user()::CODE_COMPLETE, ["_id" => (string) $user->_id]);
