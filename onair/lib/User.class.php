@@ -210,7 +210,7 @@ class User
      * @param array $options
      * @return array
      */
-    static function get(string $key = 'token', array $token, array $options = []) : array {
+    static function get(string $key = 'session', array $token = [], array $options = []) : array {
         $key = strtolower(trim($key));
         $db = handleDB('mongo');
         $where = [];
@@ -224,6 +224,7 @@ class User
                 $where = [ 'email' => $token['email'] ];
             break;
             default:
+                $where = [ 'email' => app()->session('email') ];
         }
 
         $where = array_merge([ 'is_active' => static::STATUS_ACTIVE ], $where);
@@ -255,13 +256,19 @@ class User
      * @param double $longtitude
      * @return boolean
      */
-    function updateLastLocation(float $latitude, float $longtitude) : bool {
+    function updateLastLocation(float $longtitude, float $latitude) : bool {
         $db = handleDB('mongo');
         $bulk = new \MongoDB\Driver\BulkWrite();
 
         $bulk->update(
             [ '_id' => new \MongoDB\BSON\ObjectId( app()->session('_id') ) ],
-            [ '$set' => [ 'location' => [$latitude, $longtitude] ] ]
+            [ '$set' =>[
+                'location' => 
+                    [ 
+                        'type'        => 'Point',
+                        'coordinates' => [$longtitude, $latitude] ]
+                    ]
+            ]
         );
 
         return !! $db->executeBulkWrite(self::$_db_collection, $bulk);

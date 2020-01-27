@@ -21,7 +21,7 @@ class TagMatchSystem
      * @param float $longtitude
      * @return boolean
      */
-    function updateMatchTable(float $latitude, float $longtitude) : bool {
+    function updateMatchTable(float $longtitude, float $latitude) : bool {
         $db      = \handleDB('mongo');
         $bulk    = new \MongoDB\Driver\BulkWrite();
 
@@ -44,9 +44,15 @@ class TagMatchSystem
         $updateData = [
             'user_id'          => new \MongoDB\BSON\ObjectId( app()->session('_id') ),
             'tag'              => $tagIds,
+            'age'              => (int) $profile->age,
+            'gender'           => (int) $profile->gender, // 0=남자, 1=여자
+            'religion'         => $profile->religion,
             'like'             => $profile->like,
             'dislike'          => $profile->dislike,
-            'location'         => [$latitude, $longtitude],
+            'location'         => [
+                'type'        => 'Point',
+                'coordinates' => [$longtitude, $latitude]
+            ],
             'update_timestamp' => new \MongoDB\BSON\UTCDateTime()
         ];
 
@@ -57,5 +63,45 @@ class TagMatchSystem
         );
 
         return !! $db->executeBulkWrite(self::$_db_collection, $bulk);
+    }
+
+    /**
+     * 매칭 테이블을 가져옴
+     * 
+     * TODO: 종교로 매칭되는 시스템 가져와야 한다
+     *
+     * @param integer $distance
+     * @param array $coordinates
+     * @param integer $religion
+     * @return array
+     */
+    function getTable(int $distance, array $coordinates, int $religion) : object {
+        $db = handleDB('mongo');
+
+        $distance = $distance * 1000;
+        list($dbName, $collectionName) = explode('.', self::$_db_collection);
+
+        $command = new \MongoDB\Driver\Command([
+            'aggregate' => $collectionName,
+            'pipeline' => [
+                [
+                    '$geoNear' => [
+                        'spherical' => true,
+                        '$limit' => 20,
+                        'maxDistance' => $distance,
+                        'near' => [
+                            'type' => 'Point',
+                            'coordinates' => $coordinates
+                        ],
+                        'distanceField' => 'distance',
+                        'key' => 'location'
+                    ]
+                ]
+            ],
+            'cursor' => [ 'batchSize' => 10 ]
+        ]); 
+        
+        $cursor = $db->executeCommand($dbName, $command);
+        return $cursor;
     }
 }

@@ -116,7 +116,7 @@ class App
                     // 중간 미들웨어에서 유효하지 않으면
                     // 403 헤더 종료
                     http_response_code(403);
-                    die('Forbidden');
+                    die('Middleware Forbidden');
                 }
             }
         }

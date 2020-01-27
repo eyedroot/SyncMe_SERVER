@@ -29,6 +29,9 @@
 			middleware('app_oauth')
 		], 
 		[
+			// 매치 테이블 가져오기
+			app()::POST('/onair/syncme/match-table', controller('match.table')),
+
 			// 프로파일 이미지 업로드 
 			app()::POST('/onair/syncme/upload-photo', controller('profile.upload')),
 
