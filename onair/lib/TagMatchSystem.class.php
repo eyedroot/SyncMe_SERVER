@@ -32,11 +32,11 @@ class TagMatchSystem
         foreach (handleTag()->keys() as $tagSelector) {
             if (\property_exists($profile, $tagSelector)) {
                 foreach ($profile->{$tagSelector} as $row) {
-                    if (! ($row['$objectId'] instanceof \MongoDB\BSON\ObjectId)) {
-                        $row['$objectId'] = new \MongoDB\BSON\ObjectId($row['$objectId']);
+                    if (! ($row['$$objectId'] instanceof \MongoDB\BSON\ObjectId)) {
+                        $row['$$objectId'] = new \MongoDB\BSON\ObjectId($row['$$objectId']);
                     }
 
-                    $tagIds[] = $row['$objectId'];
+                    $tagIds[] = $row['$$objectId'];
                 }
             }
         }
@@ -70,33 +70,59 @@ class TagMatchSystem
      * 
      * TODO: 종교로 매칭되는 시스템 가져와야 한다
      *
+     * @param array $tagBoundary 태그 뭉치
      * @param integer $distance
      * @param array $coordinates
-     * @param integer $religion
+     * @param integer $religion TODO: 종교 매칭은 아직 구현하기에는 이르다 추후에
      * @return array
      */
-    function getTable(int $distance, array $coordinates, int $religion) : object {
+    function getTable(array $tagBoundary = [], int $distance, array $coordinates, int $religion) : object {
         $db = handleDB('mongo');
 
         $distance = $distance * 1000;
         list($dbName, $collectionName) = explode('.', self::$_db_collection);
 
+        $geoNear = [
+            '$geoNear' => [
+                'spherical' => true,
+                '$limit' => 20,
+                'maxDistance' => $distance,
+                'near' => [
+                    'type' => 'Point',
+                    'coordinates' => $coordinates
+                ],
+                'distanceField' => 'distance',
+                'key' => 'location'
+            ]
+        ];
+
+        $notMe = [
+            '$match' => [
+                'user_id' => [
+                    '$nin' => [ 
+                        new \MongoDB\BSON\ObjectId(app()::session('_id'))
+                    ]
+                ]
+            ]
+        ];
+
+        $tagMatch = [];
+        if (count($tagBoundary) > 0) {
+            $tagMatch = [
+                '$match' => [
+                    'tag' => [
+                        '$in' => $tagBoundary
+                    ]
+                ]
+            ];
+        }
+
         $command = new \MongoDB\Driver\Command([
             'aggregate' => $collectionName,
             'pipeline' => [
-                [
-                    '$geoNear' => [
-                        'spherical' => true,
-                        '$limit' => 20,
-                        'maxDistance' => $distance,
-                        'near' => [
-                            'type' => 'Point',
-                            'coordinates' => $coordinates
-                        ],
-                        'distanceField' => 'distance',
-                        'key' => 'location'
-                    ]
-                ]
+                $geoNear, 
+                $notMe,
+                $tagMatch
             ],
             'cursor' => [ 'batchSize' => 10 ]
         ]); 

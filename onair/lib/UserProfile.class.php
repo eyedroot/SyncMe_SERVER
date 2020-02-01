@@ -163,7 +163,7 @@ class UserProfile
                         return [
                             'tag_id'     => (string) $v->tag_id,
                             'origin_tag' => $v->origin_tag,
-                            '$objectId' => $v->tag_id
+                            '$$objectId'  => new \MongoDB\BSON\ObjectId($v->tag_id)
                         ];
                     };
     
