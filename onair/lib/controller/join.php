@@ -27,8 +27,7 @@ return function ($entityBody)
     endpoint( "인터넷 연결을 확인해주세요", user()::CODE_ERROR );
   }
 
-  // 후에는 oauth_token으로 로그인을 진행하게 된다
-  if ($oAuthToken = user()::join( $clone )) {
+  if (user()::join( $clone )) {
     user()::login($entity->email, $entity->password);
   } else {
     endpoint("비정상적인 접근입니다.", app()::CODE_GLOBAL_FAILURE);

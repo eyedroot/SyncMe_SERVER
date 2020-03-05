@@ -137,9 +137,10 @@ class User
                 $_SESSION['oauth_token'] = $user->oauth_token;
                 $_SESSION['is_active']   = $user->is_active;
 
-                $profile = \userProfile()::get();
-                $_SESSION['profile_age'] = $profile->age ?: null;
-                $_SESSION['profile_nickname'] = $profile->nickname ?: null;
+                if ($profile = \userProfile()::get()) {
+                    $_SESSION['profile_age'] = $profile->age ?: null;
+                    $_SESSION['profile_nickname'] = $profile->nickname ?: null;
+                }
 
                 $_SESSION['last_login']  = app()->currentDatetime;
 
@@ -230,10 +231,10 @@ class User
         $where = array_merge([ 'is_active' => static::STATUS_ACTIVE ], $where);
 
         $query = new \MongoDB\Driver\Query( $where, $options );
-        $rows = $db->executeQuery(static::$_db_collection, $query)->toArray();
+        $rows = $db->executeQuery(static::$_db_collection, $query)->toArray()[0];
 
         if ($key == 'login') {
-            $oneUser = $rows[0];
+            $oneUser = $rows;
 
             $copyPassword = $oneUser->password;
             $oneUser->password = \safeDecrypt( $oneUser->password );

@@ -118,9 +118,9 @@ class UserProfile
      *
      * @param string $_id
      * @param array $options
-     * @return object
+     * @return ?object
      */
-    static function get(string $_id = '', array $options = []) : object {
+    static function get(string $_id = '', array $options = []) : ?object {
         if (! $_id) {
             $_id = app()::session('_id');
         }
@@ -128,15 +128,15 @@ class UserProfile
         $db = handleDB('mongo');
 
         $where = [
-            'user_id' => new \MongoDB\BSON\ObjectId( $_id )
+            'user_id' => new \MongoDB\BSON\ObjectId($_id)
         ];
 
         $query = new \MongoDB\Driver\Query($where, $options);
         $rows = $db->executeQuery(self::$_db_collection, $query)->toArray();
 
-        if ($rows) {
+        if (count($rows) > 0) {
             $rows = $rows[0];
-            
+
             if (\property_exists($rows, '_id')) {
                 $rows->_id = (string) $rows->_id;
             }
@@ -163,7 +163,7 @@ class UserProfile
                         return [
                             'tag_id'     => (string) $v->tag_id,
                             'origin_tag' => $v->origin_tag,
-                            '$$objectId'  => new \MongoDB\BSON\ObjectId($v->tag_id)
+                            '$$objectId' => new \MongoDB\BSON\ObjectId($v->tag_id)
                         ];
                     };
     

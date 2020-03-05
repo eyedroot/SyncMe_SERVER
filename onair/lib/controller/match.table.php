@@ -4,7 +4,7 @@ include_once 'app.php';
 
 return function ($body) {
     $body = toObject(json_decode($body));
-    $user = user()::get()[0];
+    $user = user()::get();
     $profile = userProfile()::get();
 
     $tagBoundary = [];
